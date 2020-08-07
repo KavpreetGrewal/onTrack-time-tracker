@@ -20,77 +20,80 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-
             Container(
-              width: 175,
-              padding: EdgeInsets.only(bottom: 25, top: 30,),
-              decoration: BoxDecoration(
-                color: ThemeColors.Lavender,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(90.0),
-                  bottomRight: Radius.circular(90.0),
-                ),
-              ),
-              child: Center(
-                child: Text (
-                  'OnTrack',
-                  style: TextStyle(
-                    fontSize: 25, fontWeight: FontWeight.w700,
+                padding: EdgeInsets.only(bottom: 30, top: 0,),
+                decoration: BoxDecoration(
+                  color: ThemeColors.LightGreen,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0.0),
+                    bottomRight: Radius.circular(100.0),
                   ),
                 ),
-              ),
-            ),
-
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'You have:',
-                  style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Center (
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        fontSize: 25.0, fontWeight: FontWeight.w600,
-                      color: ThemeColors.DarkBlue,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: 175,
+                    padding: EdgeInsets.only(bottom: 25, top: 30,),
+                    decoration: BoxDecoration(
+                      color: ThemeColors.Lavender,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(90.0),
+                        bottomRight: Radius.circular(90.0),
+                      ),
                     ),
-                    children: <TextSpan> [
-                      TextSpan(text: '$hoursToday',
-                        style: TextStyle(fontSize: 40.0,
-                          fontWeight: FontWeight.bold, color: ThemeColors.Blue),),
-                      TextSpan(text: '  hours remaining today')
-                    ]
+                    child: Center(
+                      child: Text (
+                        'OnTrack',
+                        style: TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: Center (
+                      child: RichText(
+                        text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w700,
+                              fontFamily: 'Poppins',
+                              color: ThemeColors.DarkBlue,
+                            ),
+                            children: <TextSpan> [
+                              TextSpan(text: 'Weekly Hours:     '),
+                              TextSpan(text: '$hoursToday ',
+                                style: TextStyle(fontSize: 35.0,
+                                    fontWeight: FontWeight.bold, color: ThemeColors.Blue),),
+                              TextSpan(text: '/${maxHours.toInt()}')
+                            ]
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  CustomPaint (
+                    foregroundPainter: CircularProgressBar(currentHours / maxHours * 100),
+                    child: Container(
+                        width: 200,
+                        height: 200,
+                        child: GestureDetector(
+                            onTap: () {
+                              // do something here if needed
+                            },
+                            child: Center(child: Text("${(currentHours/ maxHours * 100).toInt()}%",
+                              style: TextStyle (
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold
+                              ),))
+                        )
+                    ),
+                  ),
+                ],
+              )
             ),
 
-            CustomPaint (
-              foregroundPainter: CircularProgressBar(currentHours / maxHours * 100),
-              child: Container(
-                  width: 200,
-                  height: 200,
-                  child: GestureDetector(
-                      onTap: () {
-                        // do something here if needed
-                      },
-                      child: Center(child: Text("${(currentHours/ maxHours * 100).toInt()}%",
-                        style: TextStyle (
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold
-                        ),))
-                  )
-              ),
-            ),
 
             Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
