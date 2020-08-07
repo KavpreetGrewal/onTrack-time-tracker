@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:ontrack_time_tracker/theme/colors.dart';
 
 class CircularProgressBar extends CustomPainter {
   double currentProgress;
@@ -7,18 +8,18 @@ class CircularProgressBar extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double outlineWidth = 20;
+    double outlineWidth = 25;
 
     Paint outerCircle = Paint()
       ..strokeWidth = outlineWidth
-      ..color = Colors.black
+      ..color = ThemeColors.Lavender
       ..style = PaintingStyle.stroke;
 
     Paint completeArc = Paint()
       ..strokeWidth = outlineWidth
       ..style = PaintingStyle.stroke
-      ..color = Colors.redAccent
-      ..strokeCap = StrokeCap.round;
+      ..color = ThemeColors.Blue
+      ..strokeCap = StrokeCap.butt;
 
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2 * 1.2, size.height / 2 * 1.2) - outlineWidth;
