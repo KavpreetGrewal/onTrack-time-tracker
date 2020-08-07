@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'homePage.dart';
-import 'calendarPage.dart';
-import 'settingsPage.dart';
-import 'accountPage.dart';
+import 'package:flutter/services.dart';
+import 'pages/home/homePage.dart';
+import 'pages/calendar/calendarPage.dart';
+import 'pages/settings/settingsPage.dart';
+import 'pages/account/accountPage.dart';
+import 'theme/colors.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: ThemeColors.DarkBlue, // navigation bar color
+    statusBarColor: ThemeColors.DarkBlue, // status bar color
+  ));
+
   runApp(MyApp());
 }
 
@@ -13,19 +20,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'OnTrack - Time Tracker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: ThemeColors.DarkBlue,
+              displayColor: ThemeColors.DarkBlue,
+              fontFamily: 'Poppins'
+          )
       ),
-      home: MyHomePage(title: 'Hourly - Time Tracker'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -43,45 +54,59 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: tabs[_currentIndex], // This trailing comma makes auto-formatting nicer for build methods.
       floatingActionButton: FloatingActionButton(
         // onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white.withOpacity(.6),
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        onTap: (value) {
-          // Respond to item press.
-          setState(() => _currentIndex = value);
-        },
-        items: [
-          BottomNavigationBarItem(
-            title: Text('Home'),
-            icon: Icon(Icons.home),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.only(bottom: 0, top: 0,),
+        decoration: BoxDecoration(
+          color: ThemeColors.Lavender,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
           ),
-          BottomNavigationBarItem(
-            title: Text('Calendar'),
-            icon: Icon(Icons.calendar_today),
-          ),
-          BottomNavigationBarItem(
-            title: Text('Settings'),
-            icon: Icon(Icons.settings),
-          ),
-          BottomNavigationBarItem(
-            title: Text('Account'),
-            icon: Icon(Icons.account_circle),
-          ),
-        ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentIndex,
+          backgroundColor: Colors.transparent,
+          selectedItemColor: ThemeColors.Blue,
+          unselectedItemColor: ThemeColors.DarkBlue.withOpacity(.6),
+          selectedFontSize: 13,
+          unselectedFontSize: 12,
+          elevation: 0,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: (value) {
+            // Respond to item press.
+            setState(() => _currentIndex = value);
+          },
+          items: [
+            BottomNavigationBarItem(
+              title: Text(''),
+              icon: Icon(Icons.data_usage, size: 25,),
+              activeIcon: Icon(Icons.data_usage, size: 27,)
+            ),
+            BottomNavigationBarItem(
+              title: Text(''),
+              icon: Icon(Icons.date_range, size: 25,),
+              activeIcon: Icon(Icons.date_range, size: 27,)
+            ),
+            BottomNavigationBarItem(
+              title: Text(''),
+              icon: Icon(Icons.settings, size: 25,),
+              activeIcon: Icon(Icons.settings, size: 27,)
+            ),
+            BottomNavigationBarItem(
+              title: Text(''),
+              icon: Icon(Icons.person_outline, size: 25,),
+              activeIcon: Icon(Icons.person_outline, size: 27,)
+            ),
+          ],
+        ),
       ),
     );
   }
