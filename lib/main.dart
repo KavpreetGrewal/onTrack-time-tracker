@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   final tabs = [
     Center(
-        child: Home()
+        child: Home(),
     ),
     Center(
       child: Calendar(),
@@ -55,15 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: tabs[_currentIndex], // This trailing comma makes auto-formatting nicer for build methods.
-      floatingActionButton: FloatingActionButton(
-        // onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 0, top: 0,),
         decoration: BoxDecoration(
-          color: ThemeColors.Lavender,
+          color: ThemeColors.DarkBlue,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10.0),
             topRight: Radius.circular(10.0),
@@ -73,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
           backgroundColor: Colors.transparent,
-          selectedItemColor: ThemeColors.Blue,
-          unselectedItemColor: ThemeColors.DarkBlue.withOpacity(.6),
+          selectedItemColor: ThemeColors.Red,
+          unselectedItemColor: ThemeColors.White.withOpacity(.5),
           selectedFontSize: 13,
           unselectedFontSize: 12,
           elevation: 0,
