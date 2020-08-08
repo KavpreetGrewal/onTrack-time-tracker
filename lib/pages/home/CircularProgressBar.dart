@@ -12,7 +12,7 @@ class CircularProgressBar extends CustomPainter {
 
     Paint outerCircle = Paint()
       ..strokeWidth = outlineWidth
-      ..color = ThemeColors.Lavender
+      ..color = ThemeColors.White
       ..style = PaintingStyle.stroke;
 
     Paint completeArc = Paint()
