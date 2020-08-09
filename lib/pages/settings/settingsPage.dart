@@ -1,15 +1,5 @@
 import 'package:flutter/material.dart';
-
-class SettingsVar {
-  static var timeFrame = 'hour';
-  static var timeFrameAdj = 'Hourly';
-  static var period = 'week';
-  static var periodAdj = 'Weekly';
-  static var totalTimePeriod = 70;
-  static var progressOfTimePeriod = 10;
-  static var currentTimePeriod = 0;
-  static var rollingPeriod = true;
-}
+import '../settings/variables.dart';
 
 class Settings extends StatefulWidget {
   @override
