@@ -4,6 +4,7 @@ import 'pages/home/homePage.dart';
 import 'pages/calendar/calendarPage.dart';
 import 'pages/settings/settingsPage.dart';
 import 'pages/account/accountPage.dart';
+import 'pages/settings/variables.dart';
 import 'theme/colors.dart';
 
 void main() {
@@ -11,7 +12,11 @@ void main() {
     systemNavigationBarColor: ThemeColors.DarkBlue, // navigation bar color
     statusBarColor: ThemeColors.DarkBlue, // status bar color
   ));
-
+  if (SettingsVar.dates[SettingsVar.today] == null) {
+    SettingsVar.setCurrentTimePeriod(0);
+  } else {
+    SettingsVar.setCurrentTimePeriod(SettingsVar.dates[SettingsVar.today]);
+  }
   runApp(MyApp());
 }
 

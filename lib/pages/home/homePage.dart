@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
-import '../settings/settingsPage.dart';
+import '../settings/variables.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,6 +11,104 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  TextEditingController customController = new TextEditingController(text: '${SettingsVar.currentTimePeriod}');
+
+  void setTimeFrame (String text) {
+    this.setState(() {
+      SettingsVar.setTimeFrame(text);
+    });
+  }
+
+  void setPeriod (String text) {
+    this.setState(() {
+      SettingsVar.setPeriod(text);
+    });
+  }
+
+  void setTotalTimePeriod (var text) {
+    this.setState(() {
+      SettingsVar.setTotalTimePeriod(text);
+    });
+  }
+
+  void setProgressOfTimePeriod (var text) {
+    var value = text - SettingsVar.progressOfTimePeriod;
+    this.setState(() {
+      setCurrentTimePeriod(value);
+      SettingsVar.setProgressOfTimePeriod(text);
+    });
+  }
+
+  void setCurrentTimePeriod (var text) {
+    this.setState(() {
+      SettingsVar.dates.update(SettingsVar.today,
+              (value) => value + text, ifAbsent: () => text);
+      SettingsVar.setCurrentTimePeriod(SettingsVar.dates[SettingsVar.today]);
+    });
+  }
+
+  void setDailyMax (var text) {
+    this.setState(() {
+      SettingsVar.setDailyMax(text);
+    });
+  }
+
+  void setRollingPeriod (bool text) {
+    this.setState(() {
+      SettingsVar.setRollingPeriod(text);
+    });
+  }
+
+  int getDaysLeftInWeek (bool rolling) {
+    int temp = 0;
+    var now = new DateTime.now();
+    this.setState(() {
+      if (rolling) {
+        temp = 7;
+      } else {
+        temp = 7 - now.weekday;
+        if (temp == 0) {
+          temp = 7;
+        }
+      }
+    });
+    return temp.toInt();
+  }
+
+  Future<String> createAlertDialog(BuildContext context) {
+
+    return showDialog(context: context, builder: (context) {
+      return AlertDialog(
+          title: Text('Log Hours'),
+          backgroundColor: ThemeColors.White,
+          content: TextField(
+            controller: customController,
+            autofocus: false,
+            keyboardType: TextInputType.number,
+            cursorColor: ThemeColors.Red,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.remove),
+              suffixIcon: Icon(Icons.add),
+
+            ),
+          ),
+        actions: <Widget>[
+          MaterialButton(
+            elevation: 5.0,
+            child: Text('Submit',
+            style: TextStyle(
+              color: ThemeColors.DarkBlue,
+            ),),
+            color: ThemeColors.Red,
+            onPressed: () {
+              Navigator.of(context).pop(customController.text.toString());
+            },
+          )
+        ],
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +179,7 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text (
-                              '${SettingsVar.periodAdj} Hours:',
+                              '${SettingsVar.periodAdj} ${SettingsVar.timeFrame}s:',
                                   style: TextStyle(
                                     fontSize: 20.0, fontWeight: FontWeight.w700,
                                   )
@@ -92,7 +190,7 @@ class _HomeState extends State<Home> {
                           child: Row(
                             children: <Widget>[
                               Text (
-                                  '${SettingsVar.currentTimePeriod} ',
+                                  '${SettingsVar.progressOfTimePeriod} ',
                                 style: TextStyle(fontSize: 45.0,
                                         fontWeight: FontWeight.bold,
                                     color: ThemeColors.Red),
@@ -157,31 +255,110 @@ class _HomeState extends State<Home> {
                       color: Colors.grey.withOpacity(0.3),
                       blurRadius: 10.0, // soften the shadow
                       spreadRadius: 5.0,
-
                     )
                   ]
                 ),
-                child: Center (
-                  child: RichText(
-                    text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.w600,
-                          color: ThemeColors.DarkBlue,
-                        ),
-                        children: <TextSpan> [
-                          TextSpan(text: 'Hours remaining in the week: '),
-                          TextSpan(text: '${SettingsVar.currentTimePeriod}',
-                            style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w700),),
-                        ]
+                child: Column(
+                  children: <Widget>[
+                    Padding (
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Row (
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Text (
+                                "Today's Hours:",
+                                style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.w700,
+                                )
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text (
+                                  '${SettingsVar.currentTimePeriod} ',
+                                  style: TextStyle(fontSize: 45.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: ThemeColors.Red),
+                                ),
+                                Text (
+                                    '/ ',
+                                    style: TextStyle(
+                                      fontSize: 15.0, fontWeight: FontWeight.w700,
+                                    )
+                                ),
+                                Text (
+                                    '${SettingsVar.dailyMax}',
+                                    style: TextStyle(
+                                      fontSize: 20.0, fontWeight: FontWeight.w700,
+                                    )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+
+                    Container (
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: Row (
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: RichText(
+                              text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 18.0, fontWeight: FontWeight.w700,
+                                    color: ThemeColors.DarkBlue,
+                                    fontFamily: 'Poppins', height: 1.2,
+                                  ),
+                                  children: <TextSpan> [
+                                    TextSpan(text: 'You need to log about  '),
+                                    TextSpan(text:
+                                    '${(SettingsVar.totalTimePeriod -
+                                        SettingsVar.progressOfTimePeriod) ~/
+                                        getDaysLeftInWeek(
+                                            SettingsVar.rollingPeriod)}',
+
+                                      style: TextStyle(fontSize: 25.0,
+                                          fontWeight: FontWeight.w700,
+                                      color: ThemeColors.Red),),
+                                    TextSpan(text: '  hours each day for the next  '),
+                                    TextSpan(text:
+                                    '${getDaysLeftInWeek(SettingsVar.rollingPeriod)}',
+                                      style: TextStyle(fontSize: 25.0,
+                                          fontWeight: FontWeight.w700,
+                                          color: ThemeColors.Red),),
+                                    TextSpan(text: '  days to reach your goal',
+                                    style: TextStyle(height: 1.3),)
+
+                                  ]
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+
+                  ],
                 ),
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          // onPressed: _incrementCounter,
+          onPressed: () => {
+            createAlertDialog(context).then((value) {
+              setState(() {
+                setCurrentTimePeriod(customController.text);
+              });
+            }
+              )
+          },
           tooltip: 'Increment',
           child: Icon(Icons.add, color: ThemeColors.DarkBlue,),
           backgroundColor: ThemeColors.Red,
