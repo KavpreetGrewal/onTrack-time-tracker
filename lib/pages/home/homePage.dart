@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
 import '../settings/variables.dart';
@@ -11,8 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  TextEditingController customController = new TextEditingController(text: '${SettingsVar.currentTimePeriod}');
 
   void setTimeFrame (String text) {
     this.setState(() {
@@ -33,18 +32,14 @@ class _HomeState extends State<Home> {
   }
 
   void setProgressOfTimePeriod (var text) {
-    var value = text - SettingsVar.progressOfTimePeriod;
     this.setState(() {
-      setCurrentTimePeriod(value);
       SettingsVar.setProgressOfTimePeriod(text);
     });
   }
 
   void setCurrentTimePeriod (var text) {
     this.setState(() {
-      SettingsVar.dates.update(SettingsVar.today,
-              (value) => value + text, ifAbsent: () => text);
-      SettingsVar.setCurrentTimePeriod(SettingsVar.dates[SettingsVar.today]);
+      SettingsVar.setCurrentTimePeriod(text);
     });
   }
 
@@ -76,33 +71,59 @@ class _HomeState extends State<Home> {
     return temp.toInt();
   }
 
-  Future<String> createAlertDialog(BuildContext context) {
+  var controller = new TextEditingController(text: '${SettingsVar.currentTimePeriod}');
 
-    return showDialog(context: context, builder: (context) {
+  createAlertDialog(BuildContext context) {
+    @override
+    void initState() {
+      super.initState();
+      controller.text = '${SettingsVar.currentTimePeriod}'; // Setting the initial value for the field.
+    }
+
+    return showDialog(context: context, barrierDismissible: false, builder: (context) {
       return AlertDialog(
-          title: Text('Log Hours'),
+          title: Text("Log Today's Hours"),
           backgroundColor: ThemeColors.White,
-          content: TextField(
-            controller: customController,
-            autofocus: false,
-            keyboardType: TextInputType.number,
-            cursorColor: ThemeColors.Red,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.remove),
-              suffixIcon: Icon(Icons.add),
-
+          content: Container(
+            padding: EdgeInsets.only(right: 30, left: 30),
+            child: TextField(
+              textAlign: TextAlign.center,
+              autofocus: true,
+              controller: this.controller,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              cursorColor: ThemeColors.Red,
+              decoration: InputDecoration(
+                prefix: IconButton(
+                  icon: Icon(Icons.remove_circle_outline, color: ThemeColors.Red,),
+                  onPressed: () {
+                    int current = int.parse(controller.text);
+                    controller.text = '${--current}';
+                  },
+                ),
+                suffix: IconButton(
+                  icon: Icon(Icons.add_circle_outline, color: ThemeColors.Red,),
+                  onPressed: () {
+                    int current = int.parse(controller.text);
+                    controller.text = '${++current}';
+                  },
+                ),
+              ),
             ),
           ),
         actions: <Widget>[
           MaterialButton(
             elevation: 5.0,
             child: Text('Submit',
-            style: TextStyle(
-              color: ThemeColors.DarkBlue,
-            ),),
+              style: TextStyle(
+                color: ThemeColors.DarkBlue,
+              ),),
             color: ThemeColors.Red,
             onPressed: () {
-              Navigator.of(context).pop(customController.text.toString());
+              setCurrentTimePeriod(int.parse(controller.text));
+              Navigator.of(context).pop(controller.text.toString());
             },
           )
         ],
@@ -334,8 +355,7 @@ class _HomeState extends State<Home> {
                                           fontWeight: FontWeight.w700,
                                           color: ThemeColors.Red),),
                                     TextSpan(text: '  days to reach your goal',
-                                    style: TextStyle(height: 1.3),)
-
+                                    style: TextStyle(height: 1.5),)
                                   ]
                               ),
                             ),
@@ -352,12 +372,7 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => {
-            createAlertDialog(context).then((value) {
-              setState(() {
-                setCurrentTimePeriod(customController.text);
-              });
-            }
-              )
+            createAlertDialog(context)
           },
           tooltip: 'Increment',
           child: Icon(Icons.add, color: ThemeColors.DarkBlue,),
@@ -366,3 +381,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
