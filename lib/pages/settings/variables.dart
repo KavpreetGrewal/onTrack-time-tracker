@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 class SettingsVar {
@@ -13,7 +12,7 @@ class SettingsVar {
   static var period = 'Week';
   static var periodAdj = 'Weekly';
   static var totalTimePeriod = 70;
-  static var progressOfTimePeriod = 10;
+  static var progressOfTimePeriod = 0;
   static var currentTimePeriod = 0;
   static var dailyMax = 12;
   static var rollingPeriod = false;
@@ -33,8 +32,10 @@ class SettingsVar {
     SettingsVar.progressOfTimePeriod = time;
   }
   static void setCurrentTimePeriod(var time) {
-    SettingsVar.currentTimePeriod = time;
-    SettingsVar.progressOfTimePeriod += time;
+    SettingsVar.progressOfTimePeriod += time - SettingsVar.currentTimePeriod;
+    SettingsVar.dates.update(SettingsVar.today,
+            (value) => time, ifAbsent: () => time);
+    SettingsVar.currentTimePeriod = dates[today];
   }
   static void setDailyMax(var time) {
     SettingsVar.dailyMax = time;
