@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'OnTrack - Time Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: ThemeColors.DarkBlue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: ThemeColors.DarkBlue,
@@ -54,6 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     Center(
       child: Calendar(),
+    ),
+    Center(
+      child: Settings(),
+    ),
+    Center(
+      child: Account(),
     )
   ];
   @override
