@@ -43,4 +43,8 @@ class SettingsVar {
   static void setRollingPeriod(bool time) {
     SettingsVar.rollingPeriod = time;
   }
+  static void editHours(var hours, var day) {
+    SettingsVar.dates.update(day,
+            (value) => hours, ifAbsent: () => hours);
+  }
 }
