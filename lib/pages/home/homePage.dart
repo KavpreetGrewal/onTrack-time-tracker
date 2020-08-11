@@ -60,12 +60,15 @@ class _HomeState extends State<Home> {
     var now = new DateTime.now();
     this.setState(() {
       if (rolling) {
-        temp = 7;
+        temp = 6;
       } else {
-        temp = 7 - now.weekday;
+        temp = 6 - now.weekday;
         if (temp == 0) {
-          temp = 7;
+          temp = 6;
         }
+      }
+      if (SettingsVar.currentTimePeriod == 0) {
+        temp += 1;
       }
     });
     return temp.toInt();
@@ -370,12 +373,18 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended (
           onPressed: () => {
             createAlertDialog(context)
           },
-          tooltip: 'Increment',
-          child: Icon(Icons.add, color: ThemeColors.DarkBlue,),
+          tooltip: 'Log Hours',
+          icon: Icon(Icons.add, color: ThemeColors.DarkBlue,),
+          label: Text (
+            'Log Hours',
+            style: TextStyle(
+              color: ThemeColors.DarkBlue,
+            ),
+          ),
           backgroundColor: ThemeColors.Red,
         ),
     );
