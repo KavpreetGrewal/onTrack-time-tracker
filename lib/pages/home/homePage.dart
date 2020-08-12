@@ -1,3 +1,4 @@
+import 'package:date_util/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,6 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+
 
   void setTimeFrame (String text) {
     this.setState(() {
@@ -33,8 +36,32 @@ class _HomeState extends State<Home> {
 
   void setProgressOfTimePeriod (var text) {
     this.setState(() {
-      SettingsVar.setProgressOfTimePeriod(text);
+      if (SettingsVar.period == 'Week') {
+        SettingsVar.setwProgressOfTimePeriod(text);
+      }
+      if (SettingsVar.period == 'Month') {
+        SettingsVar.setmProgressOfTimePeriod(text);
+      }
+      if (SettingsVar.period == 'Year') {
+        SettingsVar.setyProgressOfTimePeriod(text);
+      }
     });
+  }
+
+  int getProgress () {
+    var progress;
+    this.setState(() {
+      if (SettingsVar.period == 'Week') {
+        progress = SettingsVar.wprogressOfTimePeriod;
+      }
+      if (SettingsVar.period == 'Month') {
+        progress = SettingsVar.mprogressOfTimePeriod;
+      }
+      if (SettingsVar.period == 'Year') {
+        progress = SettingsVar.yprogressOfTimePeriod;
+      }
+    });
+    return progress;
   }
 
   void setCurrentTimePeriod (var text) {
@@ -59,19 +86,39 @@ class _HomeState extends State<Home> {
     int temp = 0;
     var now = new DateTime.now();
     this.setState(() {
-      if (rolling) {
-        temp = 6;
-      } else {
-        temp = 6 - now.weekday;
-        if (temp == 0) {
+      if (SettingsVar.period == 'Week') {
+        if (rolling) {
           temp = 6;
+        } else {
+          temp = 6 - now.weekday;
+          if (temp == 0) {
+            temp = 6;
+          }
+        }
+        if (SettingsVar.currentTimePeriod == 0) {
+          temp += 1;
+        }
+      } else if (SettingsVar.period == 'Month') {
+        if (rolling) {
+          temp = DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year) - 1;
+        } else {
+          temp = DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year) - DateTime.now().day;
+        }
+        if (SettingsVar.currentTimePeriod == 0) {
+          temp += 1;
+        }
+      } else if (SettingsVar.period == 'Year') {
+        if (rolling) {
+          temp = DateTime.utc(DateTime.now().year, 12, 31).difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays - 1;
+        } else {
+          temp = DateTime.now().difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays;
+        }
+        if (SettingsVar.currentTimePeriod == 0) {
+          temp += 1;
         }
       }
-      if (SettingsVar.currentTimePeriod == 0) {
-        temp += 1;
-      }
     });
-    return temp.toInt();
+    return temp.toInt() == 0 ? 1:temp.toInt();
   }
 
   var controller = new TextEditingController(text: '${SettingsVar.currentTimePeriod}');
@@ -214,7 +261,7 @@ class _HomeState extends State<Home> {
                           child: Row(
                             children: <Widget>[
                               Text (
-                                  '${SettingsVar.progressOfTimePeriod} ',
+                                  '${getProgress()} ',
                                 style: TextStyle(fontSize: 45.0,
                                         fontWeight: FontWeight.bold,
                                     color: ThemeColors.Red),
@@ -240,7 +287,7 @@ class _HomeState extends State<Home> {
 
                     CustomPaint (
                       foregroundPainter: CircularProgressBar(
-                          SettingsVar.progressOfTimePeriod.toDouble() /
+                          getProgress().toDouble() /
                               SettingsVar.totalTimePeriod.toDouble() * 100),
                       child: Container(
                           width: 200,
@@ -250,7 +297,7 @@ class _HomeState extends State<Home> {
                                 // do something here if needed
                               },
                               child: Center(child: Text(
-                                "${(SettingsVar.progressOfTimePeriod /
+                                "${(getProgress() /
                                     SettingsVar.totalTimePeriod * 100).toInt()}%",
                                 style: TextStyle (
                                     fontSize: 30,
@@ -344,7 +391,7 @@ class _HomeState extends State<Home> {
                                     TextSpan(text: 'You need to log about  '),
                                     TextSpan(text:
                                     '${(SettingsVar.totalTimePeriod -
-                                        SettingsVar.progressOfTimePeriod) ~/
+                                        getProgress()) ~/
                                         getDaysLeftInWeek(
                                             SettingsVar.rollingPeriod)}',
 
@@ -389,5 +436,6 @@ class _HomeState extends State<Home> {
         ),
     );
   }
+
 }
 
