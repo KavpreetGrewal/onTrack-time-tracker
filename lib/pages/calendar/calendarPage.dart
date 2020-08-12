@@ -1,3 +1,4 @@
+import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -65,25 +66,62 @@ class _CalendarState extends State<Calendar> {
   }
 
   void editHours (var hour) {
+
     this.setState(() {
+      var dateUtility = new DateUtil();
       var theDay = days.difference(SettingsVar.initialDate).inDays;
       var hoursTheDay = SettingsVar.dates[theDay] == null ? 0 : SettingsVar.dates[theDay];
       var diff = hour - hoursTheDay;
       var daysLeft = 7 - getDaysLeftInWeek(SettingsVar.rollingPeriod);
 
-      if (SettingsVar.rollingPeriod && SettingsVar.today - theDay < 7 &&
-          SettingsVar.today - theDay >= 0 && SettingsVar.today != theDay) {
+      if (SettingsVar.period == 'Week') {
+        if (SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
+          if (SettingsVar.today - theDay < 7 && SettingsVar.today - theDay > 0) {
+            SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
+          }
+        } else if (!SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
+          if (SettingsVar.today - theDay < daysLeft &&
+              SettingsVar.today - theDay >= -(7 - daysLeft)) {
+            SettingsVar.setwProgressOfTimePeriod(
+                SettingsVar.wprogressOfTimePeriod + diff);
+          }
+        } else if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
+        }
 
-        SettingsVar.setProgressOfTimePeriod(SettingsVar.progressOfTimePeriod + diff);
+      } else if (SettingsVar.period == 'Month') {
 
-      } else if (!SettingsVar.rollingPeriod && SettingsVar.today - theDay < daysLeft
-          && SettingsVar.today - theDay > -6 && SettingsVar.today != theDay) {
-        SettingsVar.setProgressOfTimePeriod(SettingsVar.progressOfTimePeriod + diff);
-      }
+        if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+          if (days.month == DateTime.now().month) {
+            SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+          }
+        } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
+          if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
+              dateUtility.daysInMonth(DateTime.now().month, DateTime.now().year)) {
+            SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+          }
+        }
+        if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+        }
+      } else if (SettingsVar.period == 'Year') {
 
-      if (SettingsVar.today == theDay) {
-        SettingsVar.currentTimePeriod = hour;
-        SettingsVar.setProgressOfTimePeriod(SettingsVar.progressOfTimePeriod + diff);
+        if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+          if (days.year == DateTime.now().year) {
+            SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+          }
+        } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
+          if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
+              dateUtility.yearLength(DateTime.now().year)) {
+            SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+          }
+        }
+        if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+        }
       }
 
       SettingsVar.editHours(hour, theDay);
