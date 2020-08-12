@@ -1,5 +1,7 @@
+import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ontrack_time_tracker/pages/home/homePage.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 import '../settings/variables.dart';
 
@@ -50,7 +52,12 @@ class _SettingsState extends State<Settings> {
       selectedPeriod = selected;
       SettingsVar.setPeriod(selected.name);
     });
+    setState(() {
+      SettingsVar.changeProgress();
+    });
   }
+
+
 
 
   int getRollingIndex() {
