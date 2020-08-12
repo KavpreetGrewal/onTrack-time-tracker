@@ -26,6 +26,7 @@ dependencies:
   localstorage: ^3.0.0
   table_calendar: ^2.2.3
   intl: ^0.15.7
+  date_util: ^0.1.4
 
 
   # The following adds the Cupertino Icons font to your application.
