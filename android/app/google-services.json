@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1086204868146",
+    "firebase_url": "https://ontrack-time-tracker.firebaseio.com",
+    "project_id": "ontrack-time-tracker",
+    "storage_bucket": "ontrack-time-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086204868146:android:9500bea230bdea29cdee2b",
+        "android_client_info": {
+          "package_name": "com.kavpreetgrewal.ontrack_time_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086204868146-3m4abaqqp39gki998t4shuijtcs13efg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kavpreetgrewal.ontrack_time_tracker",
+            "certificate_hash": "012b5e20996891c3383caf562950d25c187934a1"
+          }
+        },
+        {
+          "client_id": "1086204868146-g0hfboljuahm8ef5epp3krhfjn83hpj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWGO-U4pmzGk2L3tV-VXiPl99aMUcuVDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086204868146-g0hfboljuahm8ef5epp3krhfjn83hpj6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1086204868146-nhd10h0ggit22sa3odah6fjjo5m96i32.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kavpreetgrewal.ontrackTimeTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
