@@ -1,23 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/home/homePage.dart';
 import 'pages/calendar/calendarPage.dart';
 import 'pages/settings/settingsPage.dart';
 import 'pages/account/accountPage.dart';
+import 'pages/account/loginPage.dart';
 import 'pages/settings/variables.dart';
 import 'theme/colors.dart';
 
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: ThemeColors.DarkBlue, // navigation bar color
     statusBarColor: ThemeColors.DarkBlue, // status bar color
   ));
+
   if (SettingsVar.dates[SettingsVar.today] == null) {
     SettingsVar.setCurrentTimePeriod(0);
   } else {
     SettingsVar.setCurrentTimePeriod(SettingsVar.dates[SettingsVar.today]);
   }
   runApp(MyApp());
+  // SettingsVar.readDates();
 }
 
 class MyApp extends StatelessWidget {
@@ -59,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Settings(),
     ),
     Center(
-      child: Account(),
+      child: MainScreen(),
     )
   ];
   @override
@@ -114,6 +120,23 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+
+class MainScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) {
+          return Login();
+        } else {
+          return Account();
+        }
+      },
     );
   }
 }
