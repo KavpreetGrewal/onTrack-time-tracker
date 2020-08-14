@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
 import '../settings/variables.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 class Home extends StatefulWidget {
   @override
@@ -314,7 +317,7 @@ class _HomeState extends State<Home> {
               Container(
                 padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
                 margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
-                height: MediaQuery.of(context).size.height - 500,
+                // height: MediaQuery.of(context).size.height - 500,
                 decoration: BoxDecoration(
                   color: ThemeColors.LightBlue,
                   borderRadius: BorderRadius.only(
@@ -436,6 +439,8 @@ class _HomeState extends State<Home> {
         ),
     );
   }
+
+
 
 }
 
