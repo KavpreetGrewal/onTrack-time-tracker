@@ -85,6 +85,7 @@ class _SettingsState extends State<Settings> {
         SettingsVar.setRollingPeriod(false);
       }
     });
+    SettingsVar.changeProgress();
   }
 
 
