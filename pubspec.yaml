@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
-path_provider: 1.6.1
+path_provider: ^1.6.11
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
@@ -27,6 +27,9 @@ dependencies:
   table_calendar: ^2.2.3
   intl: ^0.15.7
   date_util: ^0.1.4
+  firebase_auth: ^0.16.1
+  google_sign_in: ^4.5.1
+  firebase_storage: ^3.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
