@@ -17,7 +17,7 @@ class _CalendarState extends State<Calendar> {
   CalendarController _calendarController;
   var selectedDay = DateFormat.yMMMMEEEEd().format(DateTime.now());
   var days = DateTime.now();
-  static var hours = SettingsVar.dates[SettingsVar.today];
+  static var hours = SettingsVar.dates['${SettingsVar.today}'];
   var controller = new TextEditingController(text: '$hours');
 
   @override
@@ -26,7 +26,7 @@ class _CalendarState extends State<Calendar> {
     _calendarController = CalendarController();
     selectedDay = DateFormat.yMMMMEEEEd().format(DateTime.now());
     days = DateTime.now();
-    hours = SettingsVar.dates[SettingsVar.today];
+    hours = SettingsVar.dates['${SettingsVar.today}'];
   }
 
   @override
@@ -39,11 +39,11 @@ class _CalendarState extends State<Calendar> {
     this.setState(() {
       days = day;
       selectedDay = DateFormat.yMMMMEEEEd().format(day);
-      if (SettingsVar.dates[day.difference(SettingsVar.initialDate).inDays] == null) {
+      if (SettingsVar.dates['${day.difference(SettingsVar.initialDate).inDays}'] == null) {
         hours = 0;
         controller.text = '$hours';
       } else {
-        hours = SettingsVar.dates[day.difference(SettingsVar.initialDate).inDays];
+        hours = SettingsVar.dates['${day.difference(SettingsVar.initialDate).inDays}'];
         controller.text = '$hours';
       }
     });
@@ -70,7 +70,7 @@ class _CalendarState extends State<Calendar> {
     this.setState(() {
       var dateUtility = new DateUtil();
       var theDay = days.difference(SettingsVar.initialDate).inDays;
-      var hoursTheDay = SettingsVar.dates[theDay] == null ? 0 : SettingsVar.dates[theDay];
+      var hoursTheDay = SettingsVar.dates['$theDay'] == null ? 0 : SettingsVar.dates['$theDay'];
       var diff = hour - hoursTheDay;
       var daysLeft = 7 - getDaysLeftInWeek(SettingsVar.rollingPeriod);
 
