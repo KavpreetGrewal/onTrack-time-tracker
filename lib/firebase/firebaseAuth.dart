@@ -29,6 +29,7 @@ class AuthProvider {
   Future<void> logOut() async {
     try {
       await _auth.signOut();
+      SettingsVar.setLoggedIn(false);
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
       "Error logging out, please try again later." : e.toString();
@@ -78,9 +79,12 @@ class AuthProvider {
 
   Future<bool> signInAnon () async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      SettingsVar.setUser(result.user);
-      if (result.user != null) {
+      if (SettingsVar.user == null) {
+        AuthResult result = await _auth.signInAnonymously();
+        SettingsVar.setUser(result.user);
+      }
+
+      if (SettingsVar.user != null) {
         return true;
       } else {
         error = "Failed sign up, please try again later";
@@ -88,7 +92,7 @@ class AuthProvider {
       }
     } catch (e) {
       error = e.toString() == null || e.toString() == '' ?
-      "Error logging out, please try again later." : e.toString();
+      "Error signing in, please try again later." : e.toString();
       return false;
     }
   }
