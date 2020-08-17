@@ -85,6 +85,47 @@ class _HomeState extends State<Home> {
     });
   }
 
+  int getMax (int time) {
+    if (time > SettingsVar.dailyMax) {
+      return SettingsVar.dailyMax;
+    } else {
+      return time;
+    }
+  }
+
+  String getWords () {
+    if (SettingsVar.rollingPeriod) {
+      return '  hours today';
+    } else {
+      return '  hours each day for the next  ';
+    }
+  }
+
+  String getTime () {
+    if (SettingsVar.rollingPeriod) {
+      return '';
+    } else {
+      return '${getDaysLeftInWeek(SettingsVar.rollingPeriod)}';
+    }
+  }
+  
+  String getHours () {
+    if (SettingsVar.rollingPeriod) {
+      return '${getMax(SettingsVar.totalTimePeriod - getProgress())}';
+    } else {
+      return '${(SettingsVar.totalTimePeriod - getProgress()) ~/
+          getDaysLeftInWeek(SettingsVar.rollingPeriod)}';
+    }
+  }
+
+  String getEndingText () {
+    if (SettingsVar.rollingPeriod) {
+      return ' to reach your goal';
+    } else {
+      return '  days to reach your goal';
+    }
+  }
+
   int getDaysLeftInWeek (bool rolling) {
     int temp = 0;
     var now = new DateTime.now();
@@ -392,22 +433,16 @@ class _HomeState extends State<Home> {
                                   ),
                                   children: <TextSpan> [
                                     TextSpan(text: 'You need to log about  '),
-                                    TextSpan(text:
-                                    '${(SettingsVar.totalTimePeriod -
-                                        getProgress()) ~/
-                                        getDaysLeftInWeek(
-                                            SettingsVar.rollingPeriod)}',
-
+                                    TextSpan(text: getHours(),
                                       style: TextStyle(fontSize: 25.0,
                                           fontWeight: FontWeight.w700,
                                       color: ThemeColors.Red),),
-                                    TextSpan(text: '  hours each day for the next  '),
-                                    TextSpan(text:
-                                    '${getDaysLeftInWeek(SettingsVar.rollingPeriod)}',
+                                    TextSpan(text: getWords()),
+                                    TextSpan(text: getTime(),
                                       style: TextStyle(fontSize: 25.0,
                                           fontWeight: FontWeight.w700,
                                           color: ThemeColors.Red),),
-                                    TextSpan(text: '  days to reach your goal',
+                                    TextSpan(text: getEndingText(),
                                     style: TextStyle(height: 1.5),)
                                   ]
                               ),
