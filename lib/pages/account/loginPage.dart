@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ontrack_time_tracker/firebase/firebaseAuth.dart';
+import 'package:ontrack_time_tracker/main.dart';
 import 'package:ontrack_time_tracker/pages/settings/variables.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 
@@ -10,9 +11,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   TextEditingController _emailController;
   TextEditingController _passwordController;
+
 
   @override
   void initState() {
@@ -166,6 +167,8 @@ class _LoginState extends State<Login> {
                                     return;
                                   }
                                   bool res = await AuthProvider().signInWithEmail(_emailController.text, _passwordController.text);
+                                  SettingsVar.setLoggedIn(res);
+                                  MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
                                     print("Login failed");
@@ -209,6 +212,8 @@ class _LoginState extends State<Login> {
                                     return;
                                   }
                                   bool res = await AuthProvider().signUpWithEmail(_emailController.text, _passwordController.text);
+                                  SettingsVar.setLoggedIn(res);
+                                  MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
                                     print("Sign up failed");
@@ -270,6 +275,8 @@ class _LoginState extends State<Login> {
                               SettingsVar.setEmail(_emailController.text);
                               SettingsVar.setPassword(_passwordController.text);
                               bool res = await AuthProvider().loginWithGoogle();
+                              SettingsVar.setLoggedIn(res);
+                              MyHomePage();
                               if (!res) {
                                 showAlertDialog();
                                 print("failed");
@@ -322,6 +329,8 @@ class _LoginState extends State<Login> {
                           ),
                           onPressed: () async {
                             bool res = await AuthProvider().signInAnon();
+                            SettingsVar.setLoggedIn(res);
+                            MyHomePage();
                             if (!res) {
                               showAlertDialog();
                               print("failed");
