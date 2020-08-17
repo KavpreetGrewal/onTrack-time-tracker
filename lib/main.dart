@@ -16,21 +16,23 @@ void main() {
     systemNavigationBarColor: ThemeColors.DarkBlue, // navigation bar color
     statusBarColor: ThemeColors.DarkBlue, // status bar color
   ));
-
-  if (SettingsVar.dates[SettingsVar.today] == null) {
+  SettingsVar();
+  if (SettingsVar.dates['${SettingsVar.today}'] == null) {
     SettingsVar.setCurrentTimePeriod(0);
   } else {
-    SettingsVar.setCurrentTimePeriod(SettingsVar.dates[SettingsVar.today]);
+    SettingsVar.setCurrentTimePeriod(SettingsVar.dates['${SettingsVar.today}']);
   }
   runApp(MyApp());
-  // SettingsVar.readDates();
+
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'OnTrack - Time Tracker',
       theme: ThemeData(
         primaryColor: ThemeColors.DarkBlue,
@@ -53,19 +55,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   int _currentIndex = 0;
   final tabs = [
     Center(
-        child: Home(),
+        child: MainScreen(),
     ),
     Center(
-      child: Calendar(),
+      child: CalendarScreen(),
     ),
     Center(
-      child: Settings(),
+      child: SettingsScreen(),
     ),
     Center(
-      child: MainScreen(),
+      child: LoginScreen(),
     )
   ];
   @override
@@ -131,10 +134,62 @@ class MainScreen extends StatelessWidget {
     return StreamBuilder(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-        if (!snapshot.hasData || snapshot.data == null) {
-          return Login();
+        if (SettingsVar.loggedIn) return Home();
+        if (snapshot.hasData && snapshot.data != null) {
+          return Home();
         } else {
+          return Login();
+        }
+      },
+    );
+  }
+}
+
+class CalendarScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (SettingsVar.loggedIn) return Calendar();
+        if (snapshot.hasData && snapshot.data != null) {
+          return Calendar();
+        } else {
+          return Login();
+        }
+      },
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (SettingsVar.loggedIn) return Settings();
+        if (snapshot.hasData && snapshot.data != null) {
+          return Settings();
+        } else {
+          return Login();
+        }
+      },
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (SettingsVar.loggedIn) return Account();
+        if (snapshot.hasData && snapshot.data != null) {
           return Account();
+        } else {
+          return Login();
         }
       },
     );
