@@ -1,34 +1,55 @@
 import 'dart:collection';
-import 'package:date_util/date_util.dart';
-import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
-import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
+import 'package:date_util/date_util.dart';
+import 'dart:io' show Platform;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../sharedPreferences/variablesStorage.dart';
 
 class SettingsVar {
   static var andriod = !Platform.isIOS;
+  static dynamic loggedIn = false;
   static var initialDate = DateTime.parse('20200101');
   static var today = DateTime.now().difference(initialDate).inDays;
   static var lastDate = DateTime.now().difference(initialDate).inDays;
-  static HashMap<int, int> dates = new HashMap();
+  static Map<String, dynamic> dates = new Map<String, dynamic>();
 
-  static var timeFrame = 'Hour';
+  static dynamic timeFrame = 'Hour';
   static var timeFrameAdj = 'Hourly';
-  static var period = 'Week';
+  static dynamic period = 'Week';
   static var periodAdj = 'Weekly';
-  static var totalTimePeriod = 70;
-  static var wprogressOfTimePeriod = 0;
-  static var mprogressOfTimePeriod = 0;
-  static var yprogressOfTimePeriod = 0;
-  static var currentTimePeriod = 0;
-  static var dailyMax = 12;
-  static var rollingPeriod = false;
-  static String email = '';
-  static String password = '';
+  static dynamic totalTimePeriod = 70;
+  static dynamic wprogressOfTimePeriod = 0;
+  static dynamic mprogressOfTimePeriod = 0;
+  static dynamic yprogressOfTimePeriod = 0;
+  static dynamic currentTimePeriod = 0;
+  static dynamic dailyMax = 12;
+  static dynamic rollingPeriod = true;
+  static dynamic email = '';
+  static dynamic password = '';
   static FirebaseUser user;
   static GoogleSignInAccount googleAccount;
+
+  SettingsVar() {
+    StoredVar.getLoggedIn();
+    StoredVar.getTimeFrame();
+    StoredVar.getPeriod();
+    StoredVar.getTotalTimePeriod();
+    StoredVar.getwprogressOfTimePeriod();
+    StoredVar.getmprogressOfTimePeriod();
+    StoredVar.getyprogressOfTimePeriod();
+    StoredVar.getCurrentTimePeriod();
+    StoredVar.getDailyMax();
+    StoredVar.getRollingPeriod();
+    StoredVar.getEmail();
+    StoredVar.getPassword();
+    StoredVar.getDates();
+  }
+
+  static void setLoggedIn(bool res) {
+    SettingsVar.loggedIn = res;
+    StoredVar.setLoggedIn(res);
+  }
 
   static void setUser(FirebaseUser user) {
     SettingsVar.user = user;
@@ -41,48 +62,62 @@ class SettingsVar {
   static void setTimeFrame(String time) {
     SettingsVar.timeFrame = time;
     SettingsVar.timeFrameAdj = time + 'ly';
+    StoredVar.setTimeFrame(time);
   }
   static void setPeriod(String time) {
     SettingsVar.period = time;
     SettingsVar.periodAdj = time + 'ly';
+    StoredVar.setPeriod(time);
   }
   static void setTotalTimePeriod(var time) {
     SettingsVar.totalTimePeriod = time;
+    StoredVar.setTotalTimePeriod(time);
   }
   static void setwProgressOfTimePeriod(var time) {
     SettingsVar.wprogressOfTimePeriod = time;
+    StoredVar.setwprogressOfTimePeriod(time);
   }
   static void setmProgressOfTimePeriod(var time) {
     SettingsVar.mprogressOfTimePeriod = time;
+    StoredVar.setmprogressOfTimePeriod(time);
   }
   static void setyProgressOfTimePeriod(var time) {
     SettingsVar.yprogressOfTimePeriod = time;
+    StoredVar.setyprogressOfTimePeriod(time);
   }
   static void setCurrentTimePeriod(var time) {
     SettingsVar.wprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
+    StoredVar.setwprogressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
     SettingsVar.mprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
+    StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
     SettingsVar.yprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
-    SettingsVar.dates.update(SettingsVar.today,
+    StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
+    SettingsVar.dates.update('${SettingsVar.today}',
             (value) => time, ifAbsent: () => time);
-    // writeDates();
-    SettingsVar.currentTimePeriod = dates[today];
+    StoredVar.setDates(JsonEncoder().convert(dates)); //
+    SettingsVar.currentTimePeriod = time;
+    StoredVar.setCurrentTimePeriod(time); //
   }
   static void setDailyMax(var time) {
     SettingsVar.dailyMax = time;
+    StoredVar.setDailyMax(time);
   }
   static void setRollingPeriod(bool time) {
     SettingsVar.rollingPeriod = time;
+    StoredVar.setRollingPeriod(time);
   }
   static void editHours(var hours, var day) {
-    SettingsVar.dates.update(day,
+    SettingsVar.dates.update('$day',
             (value) => hours, ifAbsent: () => hours);
-    // writeDates();
+    StoredVar.setDates(JsonEncoder().convert(dates)); //
   }
   static void setEmail(String email) {
     SettingsVar.email = email;
+    StoredVar.setEmail(email);
   }
   static void setPassword(String password) {
     SettingsVar.password = password;
+    StoredVar.setPassword(password);
   }
 
 
@@ -92,20 +127,20 @@ class SettingsVar {
       if (SettingsVar.period == 'Week') {
         int temp = 0;
         for (int i = 0; i < 7; i++) {
-          temp += SettingsVar.dates[SettingsVar.today - i] == null ? 0:SettingsVar.dates[SettingsVar.today - i];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
         int temp = 0;
         for (int i = 0; i < DateUtil().daysInMonth(
             DateTime.now().month, DateTime.now().year); i++) {
-          temp += SettingsVar.dates[SettingsVar.today - i] == null ? 0:SettingsVar.dates[SettingsVar.today - i];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
         int temp = 0;
         for (int i = 0; i < DateUtil().yearLength(DateTime.now().year); i++) {
-          temp += SettingsVar.dates[SettingsVar.today - i] == null ? 0:SettingsVar.dates[SettingsVar.today - i];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setyProgressOfTimePeriod(temp);
       }
@@ -116,7 +151,7 @@ class SettingsVar {
 
         for (int i = 0; i < 7; i++) {
           var diff = i - dayNum;
-          temp += SettingsVar.dates[SettingsVar.today + diff] == null ? 0:SettingsVar.dates[SettingsVar.today + diff];
+          temp += SettingsVar.dates['${SettingsVar.today + diff}'] == null ? 0:SettingsVar.dates['${SettingsVar.today + diff}'];
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
@@ -128,7 +163,7 @@ class SettingsVar {
             .difference(DateTime.parse('20200101')).inDays + 1;
 
         for (int i = start; i <= end; i++) {
-          temp += SettingsVar.dates[i] == null ? 0:SettingsVar.dates[i];
+          temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
         }
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
@@ -136,7 +171,7 @@ class SettingsVar {
         var start = DateTime.utc(DateTime.now().year, 01 , 01).difference(DateTime.parse('20200101')).inDays;
         var end = DateTime.utc(DateTime.now().year, 12 , 31).difference(DateTime.parse('20200101')).inDays + 1;
         for (int i = start; i <= end; i++) {
-          temp += SettingsVar.dates[i] == null ? 0:SettingsVar.dates[i];
+          temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
         }
         SettingsVar.setyProgressOfTimePeriod(temp);
       }
@@ -145,36 +180,18 @@ class SettingsVar {
   }
 
 
-//  static Future<String> get _localPath async {
-//    final directory = await getApplicationDocumentsDirectory();
-//
-//    return directory.path;
-//  }
-//  static Future<File> get _localFile async {
-//    final path = await _localPath;
-//    return File('$path/counter.txt');
-//  }
-//  static Future<File> writeDates() async {
-//    final file = await _localFile;
-//
-//    // Write the file.
-//    file.writeAsStringSync('');
-//
-//    return file.writeAsString('${json.encode(SettingsVar.dates)}');
-//  }
-//  static Future<Map> readDates() async {
-//    try {
-//      final file = await _localFile;
-//
-//      // Read the file.
-//      String contents = await file.readAsString();
-//      dates = json.decode(contents);
-//      return null;
-//    } catch (e) {
-//      // If encountering an error, return 0.
-//      dates = new HashMap();
-//      return null;
-//    }
-//  }
+  static String getUID () {
+    try {
+      if (user != null) {
+        return user.uid;
+      } else if (googleAccount != null){
+        return googleAccount.id;
+      }
+    } on Exception catch (e) {
+      return '';
+    }
+  }
+
+
 
 }
