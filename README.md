@@ -1,5 +1,5 @@
 # OnTrack - Time Tracker
-An easy to use time tracker and hours logger made with [**Flutter**](https://flutter.dev). This versatile app allows users to easily log hours and keep track of their progress. It also uses [**Firebase**](https://firebase.google.com) so it can store a daily record of the users activity which can be accessed on any device by just logging in to their own account.
+An easy to use time tracker and hours logger made with [**Flutter**](https://flutter.dev). This versatile app allows users to easily log hours and keep track of their progress. It also uses [**Firebase**](https://firebase.google.com) so it can store a daily record of the users activity which can be accessed on any device by just logging in to the associated account.
 
 <br>
 
@@ -16,7 +16,7 @@ An easy to use time tracker and hours logger made with [**Flutter**](https://flu
 * Can access hours record on any device by logging in
 
 ## Usage
-This app will be available on both the App Store and Google Play store very soon, so please check back in a bit. In the mean time, you can test out the app by cloning/downloading this repository and running the app on an emulator or physical device through any of the main IDEs (Android Studio, VS Code, XCode, etc.).
+This app will be available on both the App Store and Google Play store very soon, so please check back in a bit. In the mean time, you can test out the app by cloning/downloading this repository and running the app on an emulator or physical device through an IDE (Android Studio, VS Code, XCode, etc.) with flutter.
 
 ## Contribution/Feedback
 Feel free to contribute if you feel anything needs to be changed or if you encounter any bugs. Just create an issue or make a pull request if needed. Any contributions or feedback would be greatly appreciated and would help improve this app.
