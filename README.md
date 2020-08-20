@@ -3,7 +3,7 @@ An easy to use time tracker and hours logger made with [**Flutter**](https://flu
 
 <br>
 
-<img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528717.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528754.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528776.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528359.png" height="455"/>
+<img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528717.png" height="450"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528754.png" height="450"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528776.png" height="450"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528359.png" height="450"/>
 
 ## Features
 * Compatible with iOS and Android
@@ -20,3 +20,6 @@ This app will be available on both the App Store and Google Play store very soon
 
 ## Contribution/Feedback
 Feel free to contribute if you feel anything needs to be changed or if you encounter any bugs. Just create an issue or make a pull request if needed. Any contributions or feedback would be greatly appreciated and would help improve this app.
+
+## Contact
+If you have any questions/concerns or just want to reach out to me, you can do so at [kavpreetgrewal@gmail.com](mailto:kavpreetgrewal@gmail.com).
