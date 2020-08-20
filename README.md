@@ -3,7 +3,7 @@ An easy to use time tracker and hours logger made with [**Flutter**](https://flu
 
 <br>
 
-<img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528717.png" height="460"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528754.png" height="460"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528776.png" height="460"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528359.png" height="460"/>
+<img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528717.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528754.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528776.png" height="455"/> <img src="https://github.com/KavpreetGrewal/onTrack-TimeTracker/blob/master/screenshots/Screenshot_1597528359.png" height="455"/>
 
 ## Features
 * Compatible with iOS and Android
