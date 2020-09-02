@@ -6,9 +6,6 @@ import 'package:flutter/services.dart';
 import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
 import '../settings/variables.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'dart:convert';
 
 class Home extends StatefulWidget {
   @override
@@ -17,7 +14,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-
+  @override
+  void initState() {
+    super.initState();
+    if (SettingsVar.dates['${SettingsVar.today}'] == null) {
+      SettingsVar.setCurrentTimePeriod(0);
+    } else {
+      SettingsVar.setCurrentTimePeriod(SettingsVar.dates['${SettingsVar.today}']);
+    }
+  }
 
   void setTimeFrame (String text) {
     this.setState(() {
@@ -85,14 +90,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  int getMax (int time) {
-    if (time > SettingsVar.dailyMax) {
-      return SettingsVar.dailyMax;
-    } else {
-      return time;
-    }
-  }
-
   String getWords () {
     if (SettingsVar.rollingPeriod) {
       return '  hours today';
@@ -111,7 +108,7 @@ class _HomeState extends State<Home> {
   
   String getHours () {
     if (SettingsVar.rollingPeriod) {
-      return '${getMax(SettingsVar.totalTimePeriod - getProgress())}';
+      return '${SettingsVar.totalTimePeriod - getProgress()}';
     } else {
       return '${(SettingsVar.totalTimePeriod - getProgress()) ~/
           getDaysLeftInWeek(SettingsVar.rollingPeriod)}';
@@ -144,18 +141,22 @@ class _HomeState extends State<Home> {
         }
       } else if (SettingsVar.period == 'Month') {
         if (rolling) {
-          temp = DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year) - 1;
+          temp = DateUtil().daysInMonth(DateTime.now().month,
+              DateTime.now().year) - 1;
         } else {
-          temp = DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year) - DateTime.now().day;
+          temp = DateUtil().daysInMonth(DateTime.now().month,
+              DateTime.now().year) - DateTime.now().day;
         }
         if (SettingsVar.currentTimePeriod == 0) {
           temp += 1;
         }
       } else if (SettingsVar.period == 'Year') {
         if (rolling) {
-          temp = DateTime.utc(DateTime.now().year, 12, 31).difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays - 1;
+          temp = DateTime.utc(DateTime.now().year, 12, 31)
+              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays - 1;
         } else {
-          temp = DateTime.now().difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays;
+          temp = DateTime.now()
+              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays;
         }
         if (SettingsVar.currentTimePeriod == 0) {
           temp += 1;
@@ -165,16 +166,19 @@ class _HomeState extends State<Home> {
     return temp.toInt() == 0 ? 1:temp.toInt();
   }
 
-  var controller = new TextEditingController(text: '${SettingsVar.currentTimePeriod}');
+  var controller = new TextEditingController(
+      text: '${SettingsVar.currentTimePeriod}'
+  );
 
   createAlertDialog(BuildContext context) {
     @override
     void initState() {
       super.initState();
-      controller.text = '${SettingsVar.currentTimePeriod}'; // Setting the initial value for the field.
+      controller.text = '${SettingsVar.currentTimePeriod}';
     }
 
-    return showDialog(context: context, barrierDismissible: false, builder: (context) {
+    return showDialog(context: context, barrierDismissible: false,
+        builder: (context) {
       return AlertDialog(
           title: Text("Log Today's Hours"),
           backgroundColor: ThemeColors.White,

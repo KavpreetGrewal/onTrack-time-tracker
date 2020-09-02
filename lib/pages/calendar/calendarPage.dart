@@ -2,10 +2,10 @@ import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ontrack_time_tracker/sharedPreferences/variablesStorage.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 import '../settings/variables.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../home/homePage.dart';
 
 
 class Calendar extends StatefulWidget {
@@ -75,7 +75,11 @@ class _CalendarState extends State<Calendar> {
       var daysLeft = 7 - getDaysLeftInWeek(SettingsVar.rollingPeriod);
 
       if (SettingsVar.period == 'Week') {
-        if (SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
+        if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
+
+        } else if (SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
           if (SettingsVar.today - theDay < 7 && SettingsVar.today - theDay > 0) {
             SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
           }
@@ -85,14 +89,16 @@ class _CalendarState extends State<Calendar> {
             SettingsVar.setwProgressOfTimePeriod(
                 SettingsVar.wprogressOfTimePeriod + diff);
           }
-        } else if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
         }
 
       } else if (SettingsVar.period == 'Month') {
 
-        if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+        if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          StoredVar.setCurrentTimePeriod(hour);
+          SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+          StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+        } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
           if (days.month == DateTime.now().month) {
             SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
           }
@@ -102,13 +108,15 @@ class _CalendarState extends State<Calendar> {
             SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
           }
         }
-        if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
-        }
+
       } else if (SettingsVar.period == 'Year') {
 
-        if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+        if (SettingsVar.today == theDay) {
+          SettingsVar.currentTimePeriod = hour;
+          StoredVar.setCurrentTimePeriod(hour);
+          SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+          StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+        } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
           if (days.year == DateTime.now().year) {
             SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
           }
@@ -118,10 +126,7 @@ class _CalendarState extends State<Calendar> {
             SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
           }
         }
-        if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
-        }
+
       }
 
       SettingsVar.editHours(hour, theDay);
@@ -210,7 +215,8 @@ class _CalendarState extends State<Calendar> {
                 outsideDaysVisible: false,
               ),
               headerStyle: HeaderStyle(
-                formatButtonTextStyle: TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
+                formatButtonTextStyle: TextStyle().copyWith(color: Colors.white,
+                    fontSize: 15.0),
                 formatButtonDecoration: BoxDecoration(
                   color: ThemeColors.Red,
                   borderRadius: BorderRadius.circular(16.0),

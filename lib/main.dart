@@ -17,13 +17,8 @@ void main() {
     statusBarColor: ThemeColors.DarkBlue, // status bar color
   ));
   SettingsVar();
-  if (SettingsVar.dates['${SettingsVar.today}'] == null) {
-    SettingsVar.setCurrentTimePeriod(0);
-  } else {
-    SettingsVar.setCurrentTimePeriod(SettingsVar.dates['${SettingsVar.today}']);
-  }
+  SettingsVar.changeProgress();
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -74,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tabs[_currentIndex], // This trailing comma makes auto-formatting nicer for build methods.
+      body: tabs[_currentIndex],
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 0, top: 0,),
         decoration: BoxDecoration(

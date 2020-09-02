@@ -133,7 +133,8 @@ class _AccountState extends State<Account> {
                             borderRadius: BorderRadius.all(Radius.circular(40)),
                           ),
                           child: RaisedButton (
-                            padding: EdgeInsets.only(top: 13, bottom: 13, left: 15, right: 15),
+                            padding: EdgeInsets.only(top: 13, bottom: 13,
+                                left: 15, right: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0),
                             ),

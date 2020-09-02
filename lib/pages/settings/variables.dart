@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'package:date_util/date_util.dart';
 import 'dart:io' show Platform;
@@ -7,6 +6,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../sharedPreferences/variablesStorage.dart';
 
 class SettingsVar {
+  SettingsVar() {
+    StoredVar.getLoggedIn();
+    StoredVar.getTimeFrame();
+    StoredVar.getPeriod();
+    StoredVar.getTotalTimePeriod();
+    StoredVar.getwprogressOfTimePeriod();
+    StoredVar.getmprogressOfTimePeriod();
+    StoredVar.getyprogressOfTimePeriod();
+    StoredVar.getCurrentTimePeriod();
+    StoredVar.getDailyMax();
+    StoredVar.getRollingPeriod();
+    StoredVar.getEmail();
+    StoredVar.getPassword();
+    StoredVar.getDates();
+  }
+
   static var andriod = !Platform.isIOS;
   static dynamic loggedIn = false;
   static var initialDate = DateTime.parse('20200101');
@@ -30,21 +45,6 @@ class SettingsVar {
   static FirebaseUser user;
   static GoogleSignInAccount googleAccount;
 
-  SettingsVar() {
-    StoredVar.getLoggedIn();
-    StoredVar.getTimeFrame();
-    StoredVar.getPeriod();
-    StoredVar.getTotalTimePeriod();
-    StoredVar.getwprogressOfTimePeriod();
-    StoredVar.getmprogressOfTimePeriod();
-    StoredVar.getyprogressOfTimePeriod();
-    StoredVar.getCurrentTimePeriod();
-    StoredVar.getDailyMax();
-    StoredVar.getRollingPeriod();
-    StoredVar.getEmail();
-    StoredVar.getPassword();
-    StoredVar.getDates();
-  }
 
   static void setLoggedIn(bool res) {
     SettingsVar.loggedIn = res;
@@ -86,18 +86,22 @@ class SettingsVar {
     StoredVar.setyprogressOfTimePeriod(time);
   }
   static void setCurrentTimePeriod(var time) {
-    SettingsVar.wprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
-    StoredVar.setwprogressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
+    var diff = time - currentTimePeriod;
+    SettingsVar.wprogressOfTimePeriod += diff;
+    StoredVar.setwprogressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
     SettingsVar.mprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
-    StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
+    StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
     SettingsVar.yprogressOfTimePeriod += time - SettingsVar.currentTimePeriod;
-    StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + time - SettingsVar.currentTimePeriod);
+    StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+
     SettingsVar.dates.update('${SettingsVar.today}',
             (value) => time, ifAbsent: () => time);
-    StoredVar.setDates(JsonEncoder().convert(dates)); //
+    StoredVar.setDates(JsonEncoder().convert(dates));
+
     SettingsVar.currentTimePeriod = time;
-    StoredVar.setCurrentTimePeriod(time); //
+    StoredVar.setCurrentTimePeriod(time);
   }
+
   static void setDailyMax(var time) {
     SettingsVar.dailyMax = time;
     StoredVar.setDailyMax(time);
@@ -127,20 +131,23 @@ class SettingsVar {
       if (SettingsVar.period == 'Week') {
         int temp = 0;
         for (int i = 0; i < 7; i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+          SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
         int temp = 0;
         for (int i = 0; i < DateUtil().daysInMonth(
             DateTime.now().month, DateTime.now().year); i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+          SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
         int temp = 0;
         for (int i = 0; i < DateUtil().yearLength(DateTime.now().year); i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0:SettingsVar.dates['${SettingsVar.today - i}'];
+          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+          SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setyProgressOfTimePeriod(temp);
       }
@@ -151,7 +158,8 @@ class SettingsVar {
 
         for (int i = 0; i < 7; i++) {
           var diff = i - dayNum;
-          temp += SettingsVar.dates['${SettingsVar.today + diff}'] == null ? 0:SettingsVar.dates['${SettingsVar.today + diff}'];
+          temp += SettingsVar.dates['${SettingsVar.today + diff}'] == null ? 0 :
+          SettingsVar.dates['${SettingsVar.today + diff}'];
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
@@ -159,8 +167,8 @@ class SettingsVar {
         var start = DateTime.utc(DateTime.now().year, DateTime.now().month, 01).
         difference(DateTime.parse('20200101')).inDays + 1;
         var end = DateTime.utc(DateTime.now().year, DateTime.now().month  ,
-            DateUtil().daysInMonth(DateTime.now().month , DateTime.now().year ))
-            .difference(DateTime.parse('20200101')).inDays + 1;
+            DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year)
+        ).difference(DateTime.parse('20200101')).inDays + 1;
 
         for (int i = start; i <= end; i++) {
           temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
@@ -168,8 +176,10 @@ class SettingsVar {
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
         int temp = 0;
-        var start = DateTime.utc(DateTime.now().year, 01 , 01).difference(DateTime.parse('20200101')).inDays;
-        var end = DateTime.utc(DateTime.now().year, 12 , 31).difference(DateTime.parse('20200101')).inDays + 1;
+        var start = DateTime.utc(DateTime.now().year, 01 , 01)
+            .difference(DateTime.parse('20200101')).inDays;
+        var end = DateTime.utc(DateTime.now().year, 12 , 31)
+            .difference(DateTime.parse('20200101')).inDays + 1;
         for (int i = start; i <= end; i++) {
           temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
         }
@@ -187,11 +197,11 @@ class SettingsVar {
       } else if (googleAccount != null){
         return googleAccount.id;
       }
+      return '';
     } on Exception catch (e) {
       return '';
     }
   }
-
 
 
 }

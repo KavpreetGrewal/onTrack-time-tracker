@@ -26,7 +26,8 @@ class CircularProgressBar extends CustomPainter {
     canvas.drawCircle(center, radius, outerCircle);
 
     double angle = 2 * pi * (currentProgress / 100);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, angle, false, completeArc);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2,
+        angle, false, completeArc);
 
   }
 

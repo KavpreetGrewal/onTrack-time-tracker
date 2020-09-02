@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ontrack_time_tracker/pages/account/loginPage.dart';
 import 'package:ontrack_time_tracker/pages/settings/variables.dart';
+
 
 class AuthProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,9 +9,11 @@ class AuthProvider {
 
   Future<bool> signInWithEmail(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       SettingsVar.setUser(result.user);
       if (SettingsVar.user != null) {
+        SettingsVar.setLoggedIn(true);
         return true;
       } else {
         error = "Failed sing in, please try again later.";
@@ -52,6 +53,7 @@ class AuthProvider {
         error = "Failed Sign In, please try again later.";
         return false;
       }
+      SettingsVar.setLoggedIn(true);
       return true;
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
@@ -62,9 +64,11 @@ class AuthProvider {
 
   Future<bool> signUpWithEmail (String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       SettingsVar.setUser(result.user);
       if (result.user != null) {
+        SettingsVar.setLoggedIn(true);
         return true;
       } else {
         error = "Failed sign up, please try again later";
@@ -85,6 +89,7 @@ class AuthProvider {
       }
 
       if (SettingsVar.user != null) {
+        SettingsVar.setLoggedIn(true);
         return true;
       } else {
         error = "Failed sign up, please try again later";

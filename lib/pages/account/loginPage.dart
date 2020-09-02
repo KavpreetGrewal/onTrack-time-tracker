@@ -162,12 +162,14 @@ class _LoginState extends State<Login> {
                                 onPressed: () async {
                                   SettingsVar.setEmail(_emailController.text);
                                   SettingsVar.setPassword(_passwordController.text);
-                                  if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                                  if (_emailController.text.isEmpty ||
+                                      _passwordController.text.isEmpty) {
                                     print("Email and password are required");
                                     return;
                                   }
-                                  bool res = await AuthProvider().signInWithEmail(_emailController.text, _passwordController.text);
-                                  SettingsVar.setLoggedIn(res);
+                                  bool res = await AuthProvider().signInWithEmail(
+                                      _emailController.text,
+                                      _passwordController.text);
                                   MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
@@ -207,12 +209,14 @@ class _LoginState extends State<Login> {
                                 onPressed: () async {
                                   SettingsVar.setEmail(_emailController.text);
                                   SettingsVar.setPassword(_passwordController.text);
-                                  if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                                  if (_emailController.text.isEmpty ||
+                                      _passwordController.text.isEmpty) {
                                     print("Email and password are required");
                                     return;
                                   }
-                                  bool res = await AuthProvider().signUpWithEmail(_emailController.text, _passwordController.text);
-                                  SettingsVar.setLoggedIn(res);
+                                  bool res = await AuthProvider().signUpWithEmail(
+                                      _emailController.text,
+                                      _passwordController.text);
                                   MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
@@ -275,7 +279,6 @@ class _LoginState extends State<Login> {
                               SettingsVar.setEmail(_emailController.text);
                               SettingsVar.setPassword(_passwordController.text);
                               bool res = await AuthProvider().loginWithGoogle();
-                              SettingsVar.setLoggedIn(res);
                               MyHomePage();
                               if (!res) {
                                 showAlertDialog();
@@ -329,7 +332,6 @@ class _LoginState extends State<Login> {
                           ),
                           onPressed: () async {
                             bool res = await AuthProvider().signInAnon();
-                            SettingsVar.setLoggedIn(res);
                             MyHomePage();
                             if (!res) {
                               showAlertDialog();
