@@ -290,55 +290,61 @@ class _LoginState extends State<Login> {
                     ),
 
 
-                    Container (
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        child: Text (
-                          'OR',
-                          style: TextStyle (
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
+                    Visibility(
+                      visible: false,
+                      child: Container (
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
                           ),
-                        )
+                          child: Text (
+                            'OR',
+                            style: TextStyle (
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          )
+                      ),
                     ),
 
-                    Container (
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        child: RaisedButton (
-                          padding: EdgeInsets.only(top: 13, bottom: 13, left: 15, right: 15),
-                          color: ThemeColors.DarkBlue,
-                          disabledColor: ThemeColors.DarkBlue,
-                          focusColor: ThemeColors.DarkBlue,
-                          hoverColor: ThemeColors.DarkBlue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0),
+                    Visibility(
+                      visible: false,
+                      child: Container (
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
                           ),
-                          elevation: 0,
-                          focusElevation: 0,
-                          disabledElevation: 0,
-                          highlightElevation: 0,
-                          hoverElevation: 0,
-                          child: Text(
-                            'Continue without log in',
-                            style: TextStyle(
-                              color: ThemeColors.White,
-                              fontFamily: 'Poppins',
+                          child: RaisedButton (
+                            padding: EdgeInsets.only(top: 13, bottom: 13, left: 15, right: 15),
+                            color: ThemeColors.DarkBlue,
+                            disabledColor: ThemeColors.DarkBlue,
+                            focusColor: ThemeColors.DarkBlue,
+                            hoverColor: ThemeColors.DarkBlue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0),
                             ),
-                          ),
-                          onPressed: () async {
-                            bool res = await AuthProvider().signInAnon();
-                            MyHomePage();
-                            if (!res) {
-                              showAlertDialog();
-                              print("failed");
-                            }
-                          },
-                        )
+                            elevation: 0,
+                            focusElevation: 0,
+                            disabledElevation: 0,
+                            highlightElevation: 0,
+                            hoverElevation: 0,
+                            child: Text(
+                              'Continue without log in',
+                              style: TextStyle(
+                                color: ThemeColors.White,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
+                            onPressed: () async {
+                              bool res = await AuthProvider().signInAnon();
+                              MyHomePage();
+                              if (!res) {
+                                showAlertDialog();
+                                print("failed");
+                              }
+                            },
+                          )
+                      ),
                     ),
 
 
