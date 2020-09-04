@@ -204,4 +204,29 @@ class SettingsVar {
   }
 
 
+  static void reset() {
+    dates.clear();
+    setTimeFrame('Hour');
+    setPeriod('Week');
+    setTotalTimePeriod(70);
+    setwProgressOfTimePeriod(0);
+    setmProgressOfTimePeriod(0);
+    setyProgressOfTimePeriod(0);
+    setCurrentTimePeriod(0);
+    setDailyMax(12);
+    setRollingPeriod(true);
+    timeFrame = 'Hour';
+    timeFrameAdj = 'Hourly';
+    period = 'Week';
+    periodAdj = 'Weekly';
+    totalTimePeriod = 70;
+    wprogressOfTimePeriod = 0;
+    mprogressOfTimePeriod = 0;
+    yprogressOfTimePeriod = 0;
+    currentTimePeriod = 0;
+    dailyMax = 12;
+    rollingPeriod = true;
+  }
+
+
 }

@@ -101,6 +101,62 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
+
+
+  createAlertDialog(BuildContext context) {
+    @override
+    void initState() {
+      super.initState(); // Setting the initial value for the field.
+    }
+
+    return showDialog(context: context, barrierDismissible: false, builder: (context) {
+      return AlertDialog(
+        title: Text("Edit Hours"),
+        backgroundColor: ThemeColors.White,
+        content: Container(
+          padding: EdgeInsets.only(right: 30, left: 30),
+          child: Text (
+            'Are you sure you want to reset all your stats. This will mean you '
+                'will lose all your logged hours and will not be able to retrieve them.'
+          ),
+        ),
+        actions: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 15),
+            child: MaterialButton(
+              elevation: 5.0,
+              child: Text('No',
+                style: TextStyle(
+                  color: ThemeColors.DarkBlue,
+                ),),
+              color: ThemeColors.Red,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: MaterialButton(
+              elevation: 5.0,
+              child: Text('Yes',
+                style: TextStyle(
+                  color: ThemeColors.DarkBlue,
+                ),),
+              color: ThemeColors.Red,
+              onPressed: () {
+                SettingsVar.reset();
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -245,6 +301,35 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
 
+              Container (
+                  margin: EdgeInsets.only(top: 20),
+                  decoration: BoxDecoration(
+                    color: ThemeColors.Red,
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                  ),
+                  child: RaisedButton (
+                    padding: EdgeInsets.only(top: 13, bottom: 13,
+                        left: 15, right: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    color: Colors.transparent,
+                    disabledColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    elevation: 0,
+                    child: Text(
+                      'Reset Stats',
+                      style: TextStyle(
+                        color: ThemeColors.DarkBlue,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    onPressed: ()  {
+                      createAlertDialog(context);
+                    },
+                  )
+              ),
 
             ],
           ),
