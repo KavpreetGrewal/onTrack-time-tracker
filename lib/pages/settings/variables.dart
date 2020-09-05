@@ -206,6 +206,7 @@ class SettingsVar {
 
   static void reset() {
     dates.clear();
+
     setTimeFrame('Hour');
     setPeriod('Week');
     setTotalTimePeriod(70);
