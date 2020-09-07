@@ -15,8 +15,9 @@ class AuthProvider {
       SettingsVar.setUser(result.user);
       if (SettingsVar.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.uid = result.user.uid;
         StoredVar.setUID(SettingsVar.user.uid);
-//        StoredVar.getFromDB();
+        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sing in, please try again later.";
@@ -34,6 +35,7 @@ class AuthProvider {
     try {
       await _auth.signOut();
       SettingsVar.setLoggedIn(false);
+      StoredVar.uid = '';
       StoredVar.setUID('');
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
@@ -58,8 +60,9 @@ class AuthProvider {
         return false;
       }
       SettingsVar.setLoggedIn(true);
+      StoredVar.uid = account.id;
       StoredVar.setUID(SettingsVar.googleAccount.id);
-//      StoredVar.getFromDB();
+      StoredVar.getFromDB();
       return true;
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
@@ -75,8 +78,9 @@ class AuthProvider {
       SettingsVar.setUser(result.user);
       if (result.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.uid = result.user.uid;
         StoredVar.setUID(SettingsVar.user.uid);
-//        StoredVar.getFromDB();
+        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sign up, please try again later";
@@ -98,8 +102,9 @@ class AuthProvider {
 
       if (SettingsVar.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.uid = SettingsVar.user.uid;
         StoredVar.setUID(SettingsVar.user.uid);
-//        StoredVar.getFromDB();
+        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sign up, please try again later";

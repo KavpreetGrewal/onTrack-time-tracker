@@ -49,7 +49,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('timeFrame', timeFrame);
 
-    if (uid != '') firebaseDB.child('$uid/').child('timeFrame').set({'timeFrame': timeFrame});
+    if (uid != '') firebaseDB.child('$uid/').child('timeFrame').set(timeFrame);
   }
   static void getDBTimeFrame() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('timeFrame').once().then(
@@ -74,7 +74,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('period', period);
 
-    if (uid != '') firebaseDB.child('$uid/').child('period').set({'period': period});
+    if (uid != '') firebaseDB.child('$uid/').child('period').set(period);
   }
   static void getDBPeriod() async {
       DataSnapshot ds = await firebaseDB.child('$uid/').child('period').once().then(
@@ -94,7 +94,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('totalTimePeriod', totalTimePeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('totalTimePeriod').set({'totalTimePeriod': totalTimePeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('totalTimePeriod').set(totalTimePeriod);
   }
   static void getDBTotalTimePeriod() async {
         DataSnapshot ds = await firebaseDB.child('$uid/').child('totalTimePeriod').once().then(
@@ -114,7 +114,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('wprogressOfTimePeriod', wprogressOfTimePeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('wprogressOfTimePeriod').set({'wprogressOfTimePeriod': wprogressOfTimePeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('wprogressOfTimePeriod').set(wprogressOfTimePeriod);
   }
   static void getDBwprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('wprogressOfTimePeriod').once().then(
@@ -134,7 +134,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('mprogressOfTimePeriod', mprogressOfTimePeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('mprogressOfTimePeriod').set({'mprogressOfTimePeriod': mprogressOfTimePeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('mprogressOfTimePeriod').set( mprogressOfTimePeriod);
   }
   static void getDBmprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('mprogressOfTimePeriod').once().then(
@@ -154,7 +154,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('yprogressOfTimePeriod', yprogressOfTimePeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('yprogressOfTimePeriod').set({'yprogressOfTimePeriod': yprogressOfTimePeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('yprogressOfTimePeriod').set(yprogressOfTimePeriod);
   }
   static void getDByprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('yprogressOfTimePeriod').once().then(
@@ -174,7 +174,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('currentTimePeriod', currentTimePeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('currentTimePeriod').set({'currentTimePeriod': currentTimePeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('currentTimePeriod').set(currentTimePeriod);
   }
   static void getDBCurrentTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('currentTimePeriod').once().then(
@@ -194,7 +194,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('dailyMax', dailyMax);
 
-    if (uid != '') firebaseDB.child('$uid/').child('dailyMax').set({'dailyMax': dailyMax});
+    if (uid != '') firebaseDB.child('$uid/').child('dailyMax').set(dailyMax);
   }
   static void getDBDailyMax() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('dailyMax').once().then(
@@ -214,7 +214,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('rollingPeriod', rollingPeriod);
 
-    if (uid != '') firebaseDB.child('$uid/').child('rollingPeriod').set({'rollingPeriod': rollingPeriod});
+    if (uid != '') firebaseDB.child('$uid/').child('rollingPeriod').set(rollingPeriod);
   }
   static void getDBRollingPeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('rollingPeriod').once().then(
@@ -258,7 +258,7 @@ class StoredVar {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('dates', dates);
 
-    if (uid != '') firebaseDB.child('$uid/').child('dates').set({'dates': dates});
+    if (uid != '') firebaseDB.child('$uid/').child('dates').set(dates);
   }
   static void getDBDates() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('dates').once().then(
