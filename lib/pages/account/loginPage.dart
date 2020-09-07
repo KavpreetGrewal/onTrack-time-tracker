@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:ontrack_time_tracker/firebase/firebaseAuth.dart';
 import 'package:ontrack_time_tracker/main.dart';
@@ -20,6 +21,15 @@ class _LoginState extends State<Login> {
     super.initState();
     _emailController = TextEditingController(text: SettingsVar.email);
     _passwordController = TextEditingController(text: SettingsVar.password);
+
+    FirebaseAdMob.instance.initialize(appId: getAppID());
+    myBanner = buildLargeBannerAd()..load();
+  }
+
+  @override
+  void dispose() {
+    myBanner.dispose();
+    super.dispose();
   }
 
   showAlertDialog() {
@@ -48,6 +58,39 @@ class _LoginState extends State<Login> {
         return alert;
       },
     );
+  }
+
+
+  String getAppID() {
+    if (SettingsVar.andriod) {
+      return "ca-app-pub-7363607837564702~3120686503";
+    } else {
+      return "ca-app-pub-7363607837564702~5172134773";
+    }
+  }
+
+  String getAdID() {
+    if (SettingsVar.andriod) {
+      return "ca-app-pub-7363607837564702/3745472659";
+    } else {
+      return "ca-app-pub-7363607837564702/9927737622";
+    }
+  }
+
+  BannerAd myBanner;
+
+  BannerAd buildLargeBannerAd() {
+    return BannerAd(
+        adUnitId: getAdID(),
+        size: AdSize.largeBanner,
+        listener: (MobileAdEvent event) {
+          if (event == MobileAdEvent.loaded) {
+            myBanner
+              ..show(
+                  anchorType: AnchorType.bottom,
+                  anchorOffset: 100);
+          }
+        });
   }
 
 

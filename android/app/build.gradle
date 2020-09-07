@@ -13,7 +13,7 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '2'
+    flutterVersionCode = '3'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
@@ -48,7 +48,7 @@ android {
         applicationId "com.kavpreetgrewal.ontrack_time_tracker"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
+        versionCode 4
         versionName flutterVersionName
     }
 

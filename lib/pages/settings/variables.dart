@@ -20,6 +20,7 @@ class SettingsVar {
     StoredVar.getEmail();
     StoredVar.getPassword();
     StoredVar.getDates();
+    StoredVar.getUID();
   }
 
   static var andriod = !Platform.isIOS;

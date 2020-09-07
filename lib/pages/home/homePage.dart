@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:ontrack_time_tracker/sharedPreferences/variablesStorage.dart';
 import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
 import '../settings/variables.dart';
@@ -22,6 +23,7 @@ class _HomeState extends State<Home> {
     } else {
       SettingsVar.setCurrentTimePeriod(SettingsVar.dates['${SettingsVar.today}']);
     }
+    SettingsVar.changeProgress();
   }
 
   void setTimeFrame (String text) {
@@ -131,10 +133,14 @@ class _HomeState extends State<Home> {
         if (rolling) {
           temp = 6;
         } else {
-          temp = 6 - now.weekday;
-          if (temp == 0) {
-            temp = 6;
-          }
+          if (now.weekday == 7) temp = 6;
+          if (now.weekday == 1) temp = 5;
+          if (now.weekday == 2) temp = 4;
+          if (now.weekday == 3) temp = 3;
+          if (now.weekday == 4) temp = 2;
+          if (now.weekday == 5) temp = 1;
+          if (now.weekday == 6) temp = 0;
+
         }
         if (SettingsVar.currentTimePeriod == 0) {
           temp += 1;

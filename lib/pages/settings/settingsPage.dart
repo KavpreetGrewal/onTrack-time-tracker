@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 import '../settings/variables.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 
 class Settings extends StatefulWidget {
@@ -56,8 +57,6 @@ class _SettingsState extends State<Settings> {
   }
 
 
-
-
   int getRollingIndex() {
     if (SettingsVar.rollingPeriod) {
       return 0;
@@ -98,7 +97,16 @@ class _SettingsState extends State<Settings> {
     controller.text = '${SettingsVar.totalTimePeriod}';
     controllerCurrent.text = '${SettingsVar.dailyMax}';
 
+    FirebaseAdMob.instance.initialize(appId: getAppID());
+    myBanner = buildLargeBannerAd()..load();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    myBanner.dispose();
+    super.dispose();
   }
 
 
@@ -155,6 +163,39 @@ class _SettingsState extends State<Settings> {
       );
     });
   }
+
+  String getAppID() {
+    if (SettingsVar.andriod) {
+      return "ca-app-pub-7363607837564702~3120686503";
+    } else {
+      return "ca-app-pub-7363607837564702~5172134773";
+    }
+  }
+
+  String getAdID() {
+    if (SettingsVar.andriod) {
+      return "ca-app-pub-7363607837564702/3745472659";
+    } else {
+      return "ca-app-pub-7363607837564702/9927737622";
+    }
+  }
+
+  BannerAd myBanner;
+
+  BannerAd buildLargeBannerAd() {
+    return BannerAd(
+        adUnitId: getAdID(),
+        size: AdSize.largeBanner,
+        listener: (MobileAdEvent event) {
+          if (event == MobileAdEvent.loaded) {
+            myBanner
+              ..show(
+                  anchorType: AnchorType.bottom,
+                  anchorOffset: 100);
+          }
+        });
+  }
+
 
 
   @override

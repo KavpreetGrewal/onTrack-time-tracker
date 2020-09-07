@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ontrack_time_tracker/pages/settings/variables.dart';
+import 'package:ontrack_time_tracker/sharedPreferences/variablesStorage.dart';
 
 
 class AuthProvider {
@@ -14,6 +15,8 @@ class AuthProvider {
       SettingsVar.setUser(result.user);
       if (SettingsVar.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.setUID(SettingsVar.user.uid);
+//        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sing in, please try again later.";
@@ -31,6 +34,7 @@ class AuthProvider {
     try {
       await _auth.signOut();
       SettingsVar.setLoggedIn(false);
+      StoredVar.setUID('');
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
       "Error logging out, please try again later." : e.toString();
@@ -54,6 +58,8 @@ class AuthProvider {
         return false;
       }
       SettingsVar.setLoggedIn(true);
+      StoredVar.setUID(SettingsVar.googleAccount.id);
+//      StoredVar.getFromDB();
       return true;
     } catch (e) {
       error = error = e.toString() == null || e.toString() == '' ?
@@ -69,6 +75,8 @@ class AuthProvider {
       SettingsVar.setUser(result.user);
       if (result.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.setUID(SettingsVar.user.uid);
+//        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sign up, please try again later";
@@ -90,6 +98,8 @@ class AuthProvider {
 
       if (SettingsVar.user != null) {
         SettingsVar.setLoggedIn(true);
+        StoredVar.setUID(SettingsVar.user.uid);
+//        StoredVar.getFromDB();
         return true;
       } else {
         error = "Failed sign up, please try again later";
