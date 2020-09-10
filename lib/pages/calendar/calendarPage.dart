@@ -17,7 +17,7 @@ class _CalendarState extends State<Calendar> {
   CalendarController _calendarController;
   var selectedDay = DateFormat.yMMMMEEEEd().format(DateTime.now());
   var days = DateTime.now();
-  static var hours = SettingsVar.dates['${SettingsVar.today}'];
+  static double hours = SettingsVar.dates['${SettingsVar.today}'];
   var controller = new TextEditingController(text: '$hours');
 
   @override
@@ -65,7 +65,7 @@ class _CalendarState extends State<Calendar> {
     return temp.toInt();
   }
 
-  void editHours (var hour) {
+  void editHours (double hour) {
 
     this.setState(() {
       var dateUtility = new DateUtil();
@@ -151,23 +151,20 @@ class _CalendarState extends State<Calendar> {
             autofocus: true,
             controller: this.controller,
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
             cursorColor: ThemeColors.Red,
             decoration: InputDecoration(
               prefix: IconButton(
                 icon: Icon(Icons.remove_circle_outline, color: ThemeColors.Red,),
                 onPressed: () {
-                  int current = int.parse(controller.text);
-                  controller.text = '${--current}';
+                  double current = double.parse(controller.text);
+                  controller.text = '${current - 1}';
                 },
               ),
               suffix: IconButton(
                 icon: Icon(Icons.add_circle_outline, color: ThemeColors.Red,),
                 onPressed: () {
-                  int current = int.parse(controller.text);
-                  controller.text = '${++current}';
+                  double current = double.parse(controller.text);
+                  controller.text = '${current + 1}';
                 },
               ),
             ),
@@ -182,7 +179,7 @@ class _CalendarState extends State<Calendar> {
               ),),
             color: ThemeColors.Red,
             onPressed: () {
-              editHours(int.parse(controller.text));
+              editHours(double.parse(controller.text));
               updateSelectedDay(days);
               Navigator.of(context).pop(controller.text.toString());
             },
@@ -243,7 +240,7 @@ class _CalendarState extends State<Calendar> {
                           children: <TextSpan> [
                             TextSpan(text: 'You logged  '),
                             TextSpan(text:
-                            '$hours',
+                            '${hours.toDouble().toStringAsFixed(2)}',
 
                               style: TextStyle(fontSize: 25.0,
                                   fontWeight: FontWeight.w700,

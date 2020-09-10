@@ -35,11 +35,11 @@ class SettingsVar {
   static dynamic period = 'Week';
   static var periodAdj = 'Weekly';
   static dynamic totalTimePeriod = 70;
-  static dynamic wprogressOfTimePeriod = 0;
-  static dynamic mprogressOfTimePeriod = 0;
-  static dynamic yprogressOfTimePeriod = 0;
-  static dynamic currentTimePeriod = 0;
-  static dynamic dailyMax = 12;
+  static dynamic wprogressOfTimePeriod = 0.00;
+  static dynamic mprogressOfTimePeriod = 0.00;
+  static dynamic yprogressOfTimePeriod = 0.00;
+  static dynamic currentTimePeriod = 0.00;
+  static dynamic dailyMax = 14;
   static dynamic rollingPeriod = true;
   static dynamic email = '';
   static dynamic password = '';
@@ -130,14 +130,14 @@ class SettingsVar {
   static void changeProgress() {
     if (SettingsVar.rollingPeriod) {
       if (SettingsVar.period == 'Week') {
-        int temp = 0;
+        double temp = 0;
         for (int i = 0; i < 7; i++) {
           temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
           SettingsVar.dates['${SettingsVar.today - i}'];
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
-        int temp = 0;
+        double temp = 0;
         for (int i = 0; i < DateUtil().daysInMonth(
             DateTime.now().month, DateTime.now().year); i++) {
           temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
@@ -145,7 +145,7 @@ class SettingsVar {
         }
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
-        int temp = 0;
+        double temp = 0;
         for (int i = 0; i < DateUtil().yearLength(DateTime.now().year); i++) {
           temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
           SettingsVar.dates['${SettingsVar.today - i}'];
@@ -154,7 +154,7 @@ class SettingsVar {
       }
     } else {
       if (SettingsVar.period == 'Week') {
-        int temp = 0;
+        double temp = 0;
         var dayNum = DateTime.now().weekday == 7 ? 0 : DateTime.now().weekday;
 
         for (int i = 0; i < 7; i++) {
@@ -164,7 +164,7 @@ class SettingsVar {
         }
         SettingsVar.setwProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Month') {
-        int temp = 0;
+        double temp = 0;
         var start = DateTime.utc(DateTime.now().year, DateTime.now().month, 01).
         difference(DateTime.parse('20200101')).inDays + 1;
         var end = DateTime.utc(DateTime.now().year, DateTime.now().month  ,
@@ -176,7 +176,7 @@ class SettingsVar {
         }
         SettingsVar.setmProgressOfTimePeriod(temp);
       } else if (SettingsVar.period == 'Year') {
-        int temp = 0;
+        double temp = 0;
         var start = DateTime.utc(DateTime.now().year, 01 , 01)
             .difference(DateTime.parse('20200101')).inDays;
         var end = DateTime.utc(DateTime.now().year, 12 , 31)
@@ -211,22 +211,22 @@ class SettingsVar {
     setTimeFrame('Hour');
     setPeriod('Week');
     setTotalTimePeriod(70);
-    setwProgressOfTimePeriod(0);
-    setmProgressOfTimePeriod(0);
-    setyProgressOfTimePeriod(0);
-    setCurrentTimePeriod(0);
-    setDailyMax(12);
+    setwProgressOfTimePeriod(0.00);
+    setmProgressOfTimePeriod(0.00);
+    setyProgressOfTimePeriod(0.00);
+    setCurrentTimePeriod(0.00);
+    setDailyMax(14);
     setRollingPeriod(true);
     timeFrame = 'Hour';
     timeFrameAdj = 'Hourly';
     period = 'Week';
     periodAdj = 'Weekly';
     totalTimePeriod = 70;
-    wprogressOfTimePeriod = 0;
-    mprogressOfTimePeriod = 0;
-    yprogressOfTimePeriod = 0;
-    currentTimePeriod = 0;
-    dailyMax = 12;
+    wprogressOfTimePeriod = 0.00;
+    mprogressOfTimePeriod = 0.00;
+    yprogressOfTimePeriod = 0.00;
+    currentTimePeriod = 0.00;
+    dailyMax = 14;
     rollingPeriod = true;
   }
 

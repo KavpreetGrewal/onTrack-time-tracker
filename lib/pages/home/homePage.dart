@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     if (SettingsVar.dates['${SettingsVar.today}'] == null) {
-      SettingsVar.setCurrentTimePeriod(0);
+      SettingsVar.setCurrentTimePeriod(0.00);
     } else {
       SettingsVar.setCurrentTimePeriod(SettingsVar.dates['${SettingsVar.today}']);
     }
@@ -58,8 +58,8 @@ class _HomeState extends State<Home> {
     });
   }
 
-  int getProgress () {
-    var progress;
+  double getProgress () {
+    double progress;
     this.setState(() {
       if (SettingsVar.period == 'Week') {
         progress = SettingsVar.wprogressOfTimePeriod;
@@ -110,10 +110,10 @@ class _HomeState extends State<Home> {
   
   String getHours () {
     if (SettingsVar.rollingPeriod) {
-      return '${SettingsVar.totalTimePeriod - getProgress()}';
+      return '${(SettingsVar.totalTimePeriod - getProgress()).toDouble().toStringAsFixed(2)}';
     } else {
-      return '${(SettingsVar.totalTimePeriod - getProgress()) ~/
-          getDaysLeftInWeek(SettingsVar.rollingPeriod)}';
+      return '${((SettingsVar.totalTimePeriod - getProgress()) /
+          getDaysLeftInWeek(SettingsVar.rollingPeriod)).toDouble().toStringAsFixed(2)}';
     }
   }
 
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
   }
 
   int getDaysLeftInWeek (bool rolling) {
-    int temp = 0;
+    double temp = 0;
     var now = new DateTime.now();
     this.setState(() {
       if (SettingsVar.period == 'Week') {
@@ -158,11 +158,11 @@ class _HomeState extends State<Home> {
         }
       } else if (SettingsVar.period == 'Year') {
         if (rolling) {
-          temp = DateTime.utc(DateTime.now().year, 12, 31)
-              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays - 1;
+          temp = (DateTime.utc(DateTime.now().year, 12, 31)
+              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays - 1).toDouble();
         } else {
           temp = DateTime.now()
-              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays;
+              .difference(DateTime.utc(DateTime.now().year, 01, 01)).inDays.toDouble();
         }
         if (SettingsVar.currentTimePeriod == 0) {
           temp += 1;
@@ -173,14 +173,14 @@ class _HomeState extends State<Home> {
   }
 
   var controller = new TextEditingController(
-      text: '${SettingsVar.currentTimePeriod}'
+      text: '${SettingsVar.currentTimePeriod.toDouble().toStringAsFixed(2)}'
   );
 
   createAlertDialog(BuildContext context) {
     @override
     void initState() {
       super.initState();
-      controller.text = '${SettingsVar.currentTimePeriod}';
+      controller.text = '${SettingsVar.currentTimePeriod.toDouble().toStringAsFixed(2)}';
     }
 
     return showDialog(context: context, barrierDismissible: false,
@@ -195,23 +195,20 @@ class _HomeState extends State<Home> {
               autofocus: true,
               controller: this.controller,
               keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter.digitsOnly
-              ],
               cursorColor: ThemeColors.Red,
               decoration: InputDecoration(
                 prefix: IconButton(
                   icon: Icon(Icons.remove_circle_outline, color: ThemeColors.Red,),
                   onPressed: () {
-                    int current = int.parse(controller.text);
-                    controller.text = '${--current}';
+                    double current = double.parse(controller.text);
+                    controller.text = '${current - 1}';
                   },
                 ),
                 suffix: IconButton(
                   icon: Icon(Icons.add_circle_outline, color: ThemeColors.Red,),
                   onPressed: () {
-                    int current = int.parse(controller.text);
-                    controller.text = '${++current}';
+                    double current = double.parse(controller.text);
+                    controller.text = '${current + 1}';
                   },
                 ),
               ),
@@ -226,7 +223,7 @@ class _HomeState extends State<Home> {
               ),),
             color: ThemeColors.Red,
             onPressed: () {
-              setCurrentTimePeriod(int.parse(controller.text));
+              setCurrentTimePeriod(double.parse(controller.text));
               Navigator.of(context).pop(controller.text.toString());
             },
           )
@@ -315,8 +312,8 @@ class _HomeState extends State<Home> {
                           child: Row(
                             children: <Widget>[
                               Text (
-                                  '${getProgress()} ',
-                                style: TextStyle(fontSize: 45.0,
+                                  '${getProgress().toStringAsFixed(2)} ',
+                                style: TextStyle(fontSize: 40.0,
                                         fontWeight: FontWeight.bold,
                                     color: ThemeColors.Red),
                               ),
@@ -352,9 +349,9 @@ class _HomeState extends State<Home> {
                               },
                               child: Center(child: Text(
                                 "${(getProgress() /
-                                    SettingsVar.totalTimePeriod * 100).toInt()}%",
+                                    SettingsVar.totalTimePeriod * 100).toStringAsFixed(2)}%",
                                 style: TextStyle (
-                                    fontSize: 30,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                 ),))
                           )
@@ -404,8 +401,8 @@ class _HomeState extends State<Home> {
                             child: Row(
                               children: <Widget>[
                                 Text (
-                                  '${SettingsVar.currentTimePeriod} ',
-                                  style: TextStyle(fontSize: 45.0,
+                                  '${SettingsVar.currentTimePeriod.toDouble().toStringAsFixed(2)} ',
+                                  style: TextStyle(fontSize: 40.0,
                                       fontWeight: FontWeight.bold,
                                       color: ThemeColors.Red),
                                 ),

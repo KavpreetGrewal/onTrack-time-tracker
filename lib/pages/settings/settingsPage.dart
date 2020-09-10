@@ -139,6 +139,7 @@ class _SettingsState extends State<Settings> {
                 ),),
               color: ThemeColors.Red,
               onPressed: () {
+                myBanner = buildLargeBannerAd()..load();
                 Navigator.of(context).pop();
               },
             ),
@@ -154,6 +155,7 @@ class _SettingsState extends State<Settings> {
                 ),),
               color: ThemeColors.Red,
               onPressed: () {
+                myBanner = buildLargeBannerAd()..load();
                 SettingsVar.reset();
                 Navigator.of(context).pop();
               },
@@ -367,6 +369,7 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     onPressed: ()  {
+                      myBanner.dispose();
                       createAlertDialog(context);
                     },
                   )

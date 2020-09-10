@@ -108,18 +108,18 @@ class StoredVar {
 
   static void getwprogressOfTimePeriod() async {
     final prefs = await SharedPreferences.getInstance();
-    SettingsVar.wprogressOfTimePeriod = prefs.getInt('wprogressOfTimePeriod') ?? 0;
+    SettingsVar.wprogressOfTimePeriod = prefs.getDouble('wprogressOfTimePeriod') ?? 0.00;
   }
-  static Future<void> setwprogressOfTimePeriod(int wprogressOfTimePeriod) async {
+  static Future<void> setwprogressOfTimePeriod(double wprogressOfTimePeriod) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('wprogressOfTimePeriod', wprogressOfTimePeriod);
+    await prefs.setDouble('wprogressOfTimePeriod', wprogressOfTimePeriod);
 
     if (uid != '') firebaseDB.child('$uid/').child('wprogressOfTimePeriod').set(wprogressOfTimePeriod);
   }
   static void getDBwprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('wprogressOfTimePeriod').once().then(
             (DataSnapshot data){
-          SettingsVar.wprogressOfTimePeriod = data.value ?? 0;
+          SettingsVar.wprogressOfTimePeriod = data.value ?? 0.00;
           setwprogressOfTimePeriod(SettingsVar.wprogressOfTimePeriod);
           return data;
         });
@@ -128,18 +128,18 @@ class StoredVar {
 
   static void getmprogressOfTimePeriod() async {
     final prefs = await SharedPreferences.getInstance();
-    SettingsVar.mprogressOfTimePeriod = prefs.getInt('mprogressOfTimePeriod') ?? 0;
+    SettingsVar.mprogressOfTimePeriod = prefs.getDouble('mprogressOfTimePeriod') ?? 0.00;
   }
-  static Future<void> setmprogressOfTimePeriod(int mprogressOfTimePeriod) async {
+  static Future<void> setmprogressOfTimePeriod(double mprogressOfTimePeriod) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('mprogressOfTimePeriod', mprogressOfTimePeriod);
+    await prefs.setDouble('mprogressOfTimePeriod', mprogressOfTimePeriod);
 
     if (uid != '') firebaseDB.child('$uid/').child('mprogressOfTimePeriod').set( mprogressOfTimePeriod);
   }
   static void getDBmprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('mprogressOfTimePeriod').once().then(
             (DataSnapshot data){
-          SettingsVar.mprogressOfTimePeriod = data.value ?? 0;
+          SettingsVar.mprogressOfTimePeriod = data.value ?? 0.00;
           setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod);
           return data;
         });
@@ -148,18 +148,18 @@ class StoredVar {
 
   static void getyprogressOfTimePeriod() async {
     final prefs = await SharedPreferences.getInstance();
-    SettingsVar.yprogressOfTimePeriod = prefs.getInt('yprogressOfTimePeriod') ?? 0;
+    SettingsVar.yprogressOfTimePeriod = prefs.getDouble('yprogressOfTimePeriod') ?? 0.00;
   }
-  static Future<void> setyprogressOfTimePeriod(int yprogressOfTimePeriod) async {
+  static Future<void> setyprogressOfTimePeriod(double yprogressOfTimePeriod) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('yprogressOfTimePeriod', yprogressOfTimePeriod);
+    await prefs.setDouble('yprogressOfTimePeriod', yprogressOfTimePeriod);
 
     if (uid != '') firebaseDB.child('$uid/').child('yprogressOfTimePeriod').set(yprogressOfTimePeriod);
   }
   static void getDByprogressOfTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('yprogressOfTimePeriod').once().then(
             (DataSnapshot data){
-          SettingsVar.yprogressOfTimePeriod = data.value ?? 0;
+          SettingsVar.yprogressOfTimePeriod = data.value ?? 0.00;
           setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod);
           return data;
         });
@@ -168,18 +168,18 @@ class StoredVar {
 
   static void getCurrentTimePeriod() async {
     final prefs = await SharedPreferences.getInstance();
-    SettingsVar.currentTimePeriod = prefs.getInt('currentTimePeriod') ?? 0;
+    SettingsVar.currentTimePeriod = prefs.getDouble('currentTimePeriod') ?? 0.00;
   }
-  static Future<void> setCurrentTimePeriod(int currentTimePeriod) async {
+  static Future<void> setCurrentTimePeriod(double currentTimePeriod) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('currentTimePeriod', currentTimePeriod);
+    await prefs.setDouble('currentTimePeriod', currentTimePeriod);
 
     if (uid != '') firebaseDB.child('$uid/').child('currentTimePeriod').set(currentTimePeriod);
   }
   static void getDBCurrentTimePeriod() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('currentTimePeriod').once().then(
             (DataSnapshot data){
-          SettingsVar.currentTimePeriod = data.value ?? 0;
+          SettingsVar.currentTimePeriod = data.value ?? 0.00;
           setCurrentTimePeriod(SettingsVar.currentTimePeriod);
           return data;
         });
@@ -188,7 +188,7 @@ class StoredVar {
 
   static void  getDailyMax() async {
     final prefs = await SharedPreferences.getInstance();
-    SettingsVar.dailyMax = prefs.getInt('dailyMax') ?? 12;
+    SettingsVar.dailyMax = prefs.getInt('dailyMax') ?? 14;
   }
   static Future<void> setDailyMax(int dailyMax) async {
     final prefs = await SharedPreferences.getInstance();
@@ -199,7 +199,7 @@ class StoredVar {
   static void getDBDailyMax() async {
     DataSnapshot ds = await firebaseDB.child('$uid/').child('dailyMax').once().then(
             (DataSnapshot data){
-          SettingsVar.dailyMax = data.value ?? 12;
+          SettingsVar.dailyMax = data.value ?? 14;
           setDailyMax(SettingsVar.dailyMax);
           return data;
         });
