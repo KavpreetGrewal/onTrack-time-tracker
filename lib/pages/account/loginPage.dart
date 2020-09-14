@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
+        myBanner = buildLargeBannerAd()..load();
         Navigator.of(context).pop();
       },
     );
@@ -216,6 +217,7 @@ class _LoginState extends State<Login> {
                                   MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
+                                    myBanner.dispose();
                                     print("Login failed");
                                   }
                                 },
@@ -263,6 +265,7 @@ class _LoginState extends State<Login> {
                                   MyHomePage();
                                   if (!res) {
                                     showAlertDialog();
+                                    myBanner.dispose();
                                     print("Sign up failed");
                                   }
                                 },
@@ -325,6 +328,7 @@ class _LoginState extends State<Login> {
                               MyHomePage();
                               if (!res) {
                                 showAlertDialog();
+                                myBanner.dispose();
                                 print("failed");
                               }
                             },
@@ -383,6 +387,7 @@ class _LoginState extends State<Login> {
                               MyHomePage();
                               if (!res) {
                                 showAlertDialog();
+                                myBanner.dispose();
                                 print("failed");
                               }
                             },

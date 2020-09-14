@@ -150,7 +150,7 @@ class _CalendarState extends State<Calendar> {
             textAlign: TextAlign.center,
             autofocus: true,
             controller: this.controller,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
             cursorColor: ThemeColors.Red,
             decoration: InputDecoration(
               prefix: IconButton(

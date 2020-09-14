@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.center,
               autofocus: true,
               controller: this.controller,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
               cursorColor: ThemeColors.Red,
               decoration: InputDecoration(
                 prefix: IconButton(
