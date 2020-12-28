@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../sharedPreferences/variablesStorage.dart';
 
+// stores all variables and functions related to the user's app settings
 class SettingsVar {
+  // initializes the variables from database
   SettingsVar() {
     StoredVar.getLoggedIn();
     StoredVar.getTimeFrame();
@@ -23,6 +25,7 @@ class SettingsVar {
     StoredVar.getUID();
   }
 
+  // default variable values
   static var andriod = !Platform.isIOS;
   static dynamic loggedIn = false;
   static var initialDate = DateTime.parse('20200101');
@@ -35,9 +38,9 @@ class SettingsVar {
   static dynamic period = 'Week';
   static var periodAdj = 'Weekly';
   static dynamic totalTimePeriod = 70;
-  static dynamic wprogressOfTimePeriod = 0.00;
-  static dynamic mprogressOfTimePeriod = 0.00;
-  static dynamic yprogressOfTimePeriod = 0.00;
+  static dynamic wprogressOfTimePeriod = 0.00;    // weekly progress
+  static dynamic mprogressOfTimePeriod = 0.00;    // monthly progress
+  static dynamic yprogressOfTimePeriod = 0.00;    // yearly progress
   static dynamic currentTimePeriod = 0.00;
   static dynamic dailyMax = 14;
   static dynamic rollingPeriod = true;
@@ -65,27 +68,35 @@ class SettingsVar {
     SettingsVar.timeFrameAdj = time + 'ly';
     StoredVar.setTimeFrame(time);
   }
+
   static void setPeriod(String time) {
     SettingsVar.period = time;
     SettingsVar.periodAdj = time + 'ly';
     StoredVar.setPeriod(time);
   }
+
+
   static void setTotalTimePeriod(var time) {
     SettingsVar.totalTimePeriod = time;
     StoredVar.setTotalTimePeriod(time);
   }
+
   static void setwProgressOfTimePeriod(var time) {
     SettingsVar.wprogressOfTimePeriod = time;
     StoredVar.setwprogressOfTimePeriod(time);
   }
+
   static void setmProgressOfTimePeriod(var time) {
     SettingsVar.mprogressOfTimePeriod = time;
     StoredVar.setmprogressOfTimePeriod(time);
   }
+
   static void setyProgressOfTimePeriod(var time) {
     SettingsVar.yprogressOfTimePeriod = time;
     StoredVar.setyprogressOfTimePeriod(time);
   }
+
+  // sets the current time period, updates the progresses, and updates database
   static void setCurrentTimePeriod(var time) {
     var diff = time - currentTimePeriod;
     SettingsVar.wprogressOfTimePeriod += diff;
@@ -103,19 +114,24 @@ class SettingsVar {
     StoredVar.setCurrentTimePeriod(time);
   }
 
+
   static void setDailyMax(var time) {
     SettingsVar.dailyMax = time;
     StoredVar.setDailyMax(time);
   }
+
   static void setRollingPeriod(bool time) {
     SettingsVar.rollingPeriod = time;
     StoredVar.setRollingPeriod(time);
   }
+
+  // edits the number of hours on the given day, and updates database
   static void editHours(var hours, var day) {
     SettingsVar.dates.update('$day',
             (value) => hours, ifAbsent: () => hours);
-    StoredVar.setDates(JsonEncoder().convert(dates)); //
+    StoredVar.setDates(JsonEncoder().convert(dates));
   }
+
   static void setEmail(String email) {
     SettingsVar.email = email;
     StoredVar.setEmail(email);
@@ -125,77 +141,33 @@ class SettingsVar {
     StoredVar.setPassword(password);
   }
 
-
-
+  // used to update/change progress from the database depending on user settings
   static void changeProgress() {
     if (SettingsVar.rollingPeriod) {
       if (SettingsVar.period == 'Week') {
-        double temp = 0;
-        for (int i = 0; i < 7; i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
-          SettingsVar.dates['${SettingsVar.today - i}'];
-        }
-        SettingsVar.setwProgressOfTimePeriod(temp);
+          rollingWeek();
       } else if (SettingsVar.period == 'Month') {
-        double temp = 0;
-        for (int i = 0; i < DateUtil().daysInMonth(
-            DateTime.now().month, DateTime.now().year); i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
-          SettingsVar.dates['${SettingsVar.today - i}'];
-        }
-        SettingsVar.setmProgressOfTimePeriod(temp);
+          rollingMonth();
       } else if (SettingsVar.period == 'Year') {
-        double temp = 0;
-        for (int i = 0; i < DateUtil().yearLength(DateTime.now().year); i++) {
-          temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
-          SettingsVar.dates['${SettingsVar.today - i}'];
-        }
-        SettingsVar.setyProgressOfTimePeriod(temp);
+          rollingYear();
       }
     } else {
       if (SettingsVar.period == 'Week') {
-        double temp = 0;
-        var dayNum = DateTime.now().weekday == 7 ? 0 : DateTime.now().weekday;
-
-        for (int i = 0; i < 7; i++) {
-          var diff = i - dayNum;
-          temp += SettingsVar.dates['${SettingsVar.today + diff}'] == null ? 0 :
-          SettingsVar.dates['${SettingsVar.today + diff}'];
-        }
-        SettingsVar.setwProgressOfTimePeriod(temp);
+          fixedWeek();
       } else if (SettingsVar.period == 'Month') {
-        double temp = 0;
-        var start = DateTime.utc(DateTime.now().year, DateTime.now().month, 01).
-        difference(DateTime.parse('20200101')).inDays + 1;
-        var end = DateTime.utc(DateTime.now().year, DateTime.now().month  ,
-            DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year)
-        ).difference(DateTime.parse('20200101')).inDays + 1;
-
-        for (int i = start; i <= end; i++) {
-          temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
-        }
-        SettingsVar.setmProgressOfTimePeriod(temp);
+          fixedMonth();
       } else if (SettingsVar.period == 'Year') {
-        double temp = 0;
-        var start = DateTime.utc(DateTime.now().year, 01 , 01)
-            .difference(DateTime.parse('20200101')).inDays;
-        var end = DateTime.utc(DateTime.now().year, 12 , 31)
-            .difference(DateTime.parse('20200101')).inDays + 1;
-        for (int i = start; i <= end; i++) {
-          temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
-        }
-        SettingsVar.setyProgressOfTimePeriod(temp);
+          fixedYear();
       }
-
     }
   }
 
-
+  // gets the user Firebase UID
   static String getUID () {
     try {
       if (user != null) {
         return user.uid;
-      } else if (googleAccount != null){
+      } else if (googleAccount != null) {
         return googleAccount.id;
       }
       return '';
@@ -204,7 +176,7 @@ class SettingsVar {
     }
   }
 
-
+  // resets all the user settings and info
   static void reset() {
     dates.clear();
 
@@ -230,5 +202,78 @@ class SettingsVar {
     rollingPeriod = true;
   }
 
+  /* Change Progress helper methods */
 
+  // changes progress when rolling week
+  static void rollingWeek() {
+    double temp = 0;
+    for (int i = 0; i < 7; i++) {
+      temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+      SettingsVar.dates['${SettingsVar.today - i}'];
+    }
+    SettingsVar.setwProgressOfTimePeriod(temp);
+  }
+
+  // changes progress when rolling month
+  static void rollingMonth() {
+    double temp = 0;
+    for (int i = 0; i < DateUtil().daysInMonth(
+        DateTime.now().month, DateTime.now().year); i++) {
+      temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+      SettingsVar.dates['${SettingsVar.today - i}'];
+    }
+    SettingsVar.setmProgressOfTimePeriod(temp);
+  }
+
+  // changes progress when rolling year
+  static void rollingYear() {
+    double temp = 0;
+    for (int i = 0; i < DateUtil().yearLength(DateTime.now().year); i++) {
+      temp += SettingsVar.dates['${SettingsVar.today - i}'] == null ? 0 :
+      SettingsVar.dates['${SettingsVar.today - i}'];
+    }
+    SettingsVar.setyProgressOfTimePeriod(temp);
+  }
+
+  // changes progress when fixed week
+  static void fixedWeek() {
+    double temp = 0;
+    var dayNum = DateTime.now().weekday == 7 ? 0 : DateTime.now().weekday;
+
+    for (int i = 0; i < 7; i++) {
+      var diff = i - dayNum;
+      temp += SettingsVar.dates['${SettingsVar.today + diff}'] == null ? 0 :
+      SettingsVar.dates['${SettingsVar.today + diff}'];
+    }
+    SettingsVar.setwProgressOfTimePeriod(temp);
+  }
+
+  // changes progress when fixed month
+  static void fixedMonth() {
+    double temp = 0;
+    var start = DateTime.utc(DateTime.now().year, DateTime.now().month, 01).
+    difference(DateTime.parse('20200101')).inDays + 1;
+    var end = DateTime.utc(DateTime.now().year, DateTime.now().month  ,
+        DateUtil().daysInMonth(DateTime.now().month, DateTime.now().year)
+    ).difference(DateTime.parse('20200101')).inDays + 1;
+
+    for (int i = start; i <= end; i++) {
+      temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
+    }
+    SettingsVar.setmProgressOfTimePeriod(temp);
+  }
+
+  // changes progress when fixed year
+  static void fixedYear() {
+    double temp = 0;
+    var start = DateTime.utc(DateTime.now().year, 01 , 01)
+        .difference(DateTime.parse('20200101')).inDays;
+    var end = DateTime.utc(DateTime.now().year, 12 , 31)
+        .difference(DateTime.parse('20200101')).inDays + 1;
+
+    for (int i = start; i <= end; i++) {
+      temp += SettingsVar.dates['$i'] == null ? 0:SettingsVar.dates['$i'];
+    }
+    SettingsVar.setyProgressOfTimePeriod(temp);
+  }
 }

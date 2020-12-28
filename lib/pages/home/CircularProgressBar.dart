@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 
+// Represents the circular progress bar on the home screen
 class CircularProgressBar extends CustomPainter {
   double currentProgress;
   CircularProgressBar(this.currentProgress);

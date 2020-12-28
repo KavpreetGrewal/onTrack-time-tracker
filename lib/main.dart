@@ -10,20 +10,19 @@ import 'pages/settings/variables.dart';
 import 'theme/colors.dart';
 
 
+// Function that runs upon the launch of the app
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: ThemeColors.DarkBlue, // navigation bar color
     statusBarColor: ThemeColors.DarkBlue, // status bar color
   ));
-  SettingsVar();
-  SettingsVar.changeProgress();
+  SettingsVar(); // initializes system variables
+  SettingsVar.changeProgress(); // updates goal progress from cloud
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,6 +42,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+// Represents the main foundation of the app
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
   @override
@@ -50,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  // to switch between the page screens
   int _currentIndex = 0;
   final tabs = [
     Center(
@@ -66,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: LoginScreen(),
     )
   ];
+
+  // Builds the main nav bar and app foundation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
             topRight: Radius.circular(10.0),
           ),
         ),
+
+        // the nav bar
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
@@ -123,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 
+/* Classes below represent the various page screens of the app */
+
+// Switches to main screen only if already logged in
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -140,6 +148,7 @@ class MainScreen extends StatelessWidget {
   }
 }
 
+// Switches to calendar screen only if already logged in
 class CalendarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -157,6 +166,7 @@ class CalendarScreen extends StatelessWidget {
   }
 }
 
+// Switches to settings screen only if already logged in
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -174,6 +184,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+// Switches to account screen if logged in, otherwise switches to login screen
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

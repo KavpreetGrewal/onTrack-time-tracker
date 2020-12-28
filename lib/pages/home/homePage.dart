@@ -8,6 +8,8 @@ import 'CircularProgressBar.dart';
 import '../../theme/colors.dart';
 import '../settings/variables.dart';
 
+
+// Represents the Home page screen
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -15,6 +17,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  // Initializes the Home page screen
   @override
   void initState() {
     super.initState();
@@ -125,9 +128,11 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // Gets days left in week and updates variables
   int getDaysLeftInWeek (bool rolling) {
     double temp = 0;
     var now = new DateTime.now();
+
     this.setState(() {
       if (SettingsVar.period == 'Week') {
         if (rolling) {
@@ -140,7 +145,6 @@ class _HomeState extends State<Home> {
           if (now.weekday == 4) temp = 2;
           if (now.weekday == 5) temp = 1;
           if (now.weekday == 6) temp = 0;
-
         }
         if (SettingsVar.currentTimePeriod == 0) {
           temp += 1;
@@ -176,6 +180,8 @@ class _HomeState extends State<Home> {
       text: '${SettingsVar.currentTimePeriod.toDouble().toStringAsFixed(2)}'
   );
 
+
+  // Creates alert dialog to get user input
   createAlertDialog(BuildContext context) {
     @override
     void initState() {
@@ -232,6 +238,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // Builds the Home page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -481,8 +488,5 @@ class _HomeState extends State<Home> {
         ),
     );
   }
-
-
-
 }
 

@@ -4,9 +4,11 @@ import 'package:ontrack_time_tracker/pages/settings/variables.dart';
 import 'package:ontrack_time_tracker/sharedPreferences/variablesStorage.dart';
 
 
+// Represents Firebase (cloud database) functionality
 class AuthProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static var error;
+
 
   Future<bool> signInWithEmail(String email, String password) async {
     try {
@@ -31,17 +33,28 @@ class AuthProvider {
     }
   }
 
-  Future<void> logOut() async {
+  Future<bool> signUpWithEmail(String email, String password) async {
     try {
-      await _auth.signOut();
-      SettingsVar.setLoggedIn(false);
-      StoredVar.uid = '';
-      StoredVar.setUID('');
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      SettingsVar.setUser(result.user);
+      if (result.user != null) {
+        SettingsVar.setLoggedIn(true);
+        StoredVar.uid = result.user.uid;
+        StoredVar.setUID(SettingsVar.user.uid);
+        StoredVar.getFromDB();
+        return true;
+      } else {
+        error = "Failed sign up, please try again later";
+        return false;
+      }
     } catch (e) {
-      error = error = e.toString() == null || e.toString() == '' ?
+      error = e.toString() == null || e.toString() == '' ?
       "Error logging out, please try again later." : e.toString();
+      return false;
     }
   }
+
 
   Future<bool> loginWithGoogle() async {
     try {
@@ -71,29 +84,9 @@ class AuthProvider {
     }
   }
 
-  Future<bool> signUpWithEmail (String email, String password) async {
-    try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      SettingsVar.setUser(result.user);
-      if (result.user != null) {
-        SettingsVar.setLoggedIn(true);
-        StoredVar.uid = result.user.uid;
-        StoredVar.setUID(SettingsVar.user.uid);
-        StoredVar.getFromDB();
-        return true;
-      } else {
-        error = "Failed sign up, please try again later";
-        return false;
-      }
-    } catch (e) {
-      error = e.toString() == null || e.toString() == '' ?
-      "Error logging out, please try again later." : e.toString();
-      return false;
-    }
-  }
 
-  Future<bool> signInAnon () async {
+  // Creates an anonymous user to sign in without any info
+  Future<bool> signInAnon() async {
     try {
       if (SettingsVar.user == null) {
         AuthResult result = await _auth.signInAnonymously();
@@ -117,5 +110,17 @@ class AuthProvider {
     }
   }
 
+
+  Future<void> logOut() async {
+    try {
+      await _auth.signOut();
+      SettingsVar.setLoggedIn(false);
+      StoredVar.uid = '';
+      StoredVar.setUID('');
+    } catch (e) {
+      error = error = e.toString() == null || e.toString() == '' ?
+      "Error logging out, please try again later." : e.toString();
+    }
+  }
 }
 

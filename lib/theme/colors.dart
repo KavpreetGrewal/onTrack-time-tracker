@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Class to represent all the colours of the app as constants
 class ThemeColors  {
   static const Color LightYellow = Color(0xFFFFF9EC);
   static const Color LightYellow2 = Color(0xFFFFE4C7);

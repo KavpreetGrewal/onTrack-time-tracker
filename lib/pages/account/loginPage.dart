@@ -6,6 +6,7 @@ import 'package:ontrack_time_tracker/pages/settings/variables.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 
 
+// Represents the Login page
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -15,7 +16,7 @@ class _LoginState extends State<Login> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
 
-
+  // Initializes the Login page
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,7 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  // Creates the alert dialog
   showAlertDialog() {
 
     // set up the button
@@ -61,6 +63,8 @@ class _LoginState extends State<Login> {
     );
   }
 
+
+  /* Methods to make the Google AdMob Banner Ad */
 
   String getAppID() {
     if (SettingsVar.andriod) {
@@ -94,7 +98,10 @@ class _LoginState extends State<Login> {
         });
   }
 
+  /* End of ads section */
 
+
+  // Builds the Login page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

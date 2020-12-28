@@ -4,7 +4,7 @@ import 'package:ontrack_time_tracker/theme/colors.dart';
 import '../settings/variables.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
-
+// Represents the Settings page
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
@@ -15,12 +15,6 @@ class _SettingsState extends State<Settings> {
   final controller = TextEditingController();
   final controllerCurrent = TextEditingController();
 
-  void changeText(String text) {
-    this.setState(() {
-      this.text = text;
-    });
-  }
-
   List<Period> periods = Period.getPeriod();
   List<DropdownMenuItem<Period>> periodDropDownMenuItems;
   Period selectedPeriod;
@@ -29,63 +23,8 @@ class _SettingsState extends State<Settings> {
   List<DropdownMenuItem<Rolling>> rollingDropDownMenuItems;
   Rolling selectedRolling;
 
-  int getPeriodIndex() {
-    if (SettingsVar.period == 'Week') {
-      return 0;
-    } else if (SettingsVar.period == 'Month') {
-      return 1;
-    }
-    return 2;
-  }
 
-  List<DropdownMenuItem<Period>> buildPeriodDropDownMenuItems(List periods) {
-    List<DropdownMenuItem<Period>> items = List();
-    for(Period period in periods) {
-      items.add(DropdownMenuItem(value: period, child: Text(period.name),),);
-    }
-    return items;
-  }
-
-  onChangePeriodDropDownItem(Period selected) {
-    setState(() {
-      selectedPeriod = selected;
-      SettingsVar.setPeriod(selected.name);
-    });
-    setState(() {
-      SettingsVar.changeProgress();
-    });
-  }
-
-
-  int getRollingIndex() {
-    if (SettingsVar.rollingPeriod) {
-      return 0;
-    } else {
-      return 1;
-    }
-  }
-
-  List<DropdownMenuItem<Rolling>> buildRollingDropDownMenuItems(List rollings) {
-    List<DropdownMenuItem<Rolling>> items = List();
-    for(Rolling rolling in rollings) {
-      items.add(DropdownMenuItem(value: rolling, child: Text(rolling.name),),);
-    }
-    return items;
-  }
-
-  onChangeRollingDropDownItem(Rolling selected) {
-    setState(() {
-      selectedRolling = selected;
-      if (selected.name == 'True') {
-        SettingsVar.setRollingPeriod(true);
-      } else {
-        SettingsVar.setRollingPeriod(false);
-      }
-    });
-    SettingsVar.changeProgress();
-  }
-
-
+  // Initializes the page
   @override
   void initState() {
     periodDropDownMenuItems = buildPeriodDropDownMenuItems(periods);
@@ -111,6 +50,77 @@ class _SettingsState extends State<Settings> {
 
 
 
+  // Updates the text displayed
+  void changeText(String text) {
+    this.setState(() {
+      this.text = text;
+    });
+  }
+
+  // Gets the index corresponding to the goal length selection
+  int getPeriodIndex() {
+    if (SettingsVar.period == 'Week') {
+      return 0;
+    } else if (SettingsVar.period == 'Month') {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  // Builds the dropdown menu for time period selection
+  List<DropdownMenuItem<Period>> buildPeriodDropDownMenuItems(List periods) {
+    List<DropdownMenuItem<Period>> items = List();
+    for(Period period in periods) {
+      items.add(DropdownMenuItem(value: period, child: Text(period.name),),);
+    }
+    return items;
+  }
+
+  // Updates app setting based on the new selection
+  onChangePeriodDropDownItem(Period selected) {
+    setState(() {
+      selectedPeriod = selected;
+      SettingsVar.setPeriod(selected.name);
+    });
+    setState(() {
+      SettingsVar.changeProgress();
+    });
+  }
+
+  // Gets the index corresponding to the rolling or fixed Selection
+  int getRollingIndex() {
+    if (SettingsVar.rollingPeriod) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  // Builds the dropdown menu for rolling or fixed selection
+  List<DropdownMenuItem<Rolling>> buildRollingDropDownMenuItems(List rollings) {
+    List<DropdownMenuItem<Rolling>> items = List();
+    for(Rolling rolling in rollings) {
+      items.add(DropdownMenuItem(value: rolling, child: Text(rolling.name),),);
+    }
+    return items;
+  }
+
+  // Updates app settings based on user selection
+  onChangeRollingDropDownItem(Rolling selected) {
+    setState(() {
+      selectedRolling = selected;
+      if (selected.name == 'True') {
+        SettingsVar.setRollingPeriod(true);
+      } else {
+        SettingsVar.setRollingPeriod(false);
+      }
+    });
+    SettingsVar.changeProgress();
+  }
+
+
+  // Creates the alert dialog to get user input
   createAlertDialog(BuildContext context) {
     @override
     void initState() {
@@ -166,6 +176,9 @@ class _SettingsState extends State<Settings> {
     });
   }
 
+
+  /* Methods to make the Google AdMob Banner Ad */
+
   String getAppID() {
     if (SettingsVar.andriod) {
       return "ca-app-pub-7363607837564702~3120686503";
@@ -198,8 +211,10 @@ class _SettingsState extends State<Settings> {
         });
   }
 
+  /* End of ads section */
 
 
+  // Builds the page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -383,6 +398,8 @@ class _SettingsState extends State<Settings> {
   }
 }
 
+
+// Represents the different time periods to be selected
 class Period {
   int id;
   String name;
@@ -397,6 +414,7 @@ class Period {
   }
 }
 
+// Represents the selections for rolling or fixed time period
 class Rolling {
   int id;
   String name;

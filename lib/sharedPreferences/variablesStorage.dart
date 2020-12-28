@@ -3,10 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/settings/variables.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+// Represents the on device (offline) storage (i.e. Shared Preferences)
 class StoredVar {
   static final firebaseDB = FirebaseDatabase.instance.reference();
   static String uid = '';
 
+  // Called to update all the variables from the database
   static void getFromDB() {
     StoredVar.getDBTimeFrame();
     StoredVar.getDBPeriod();
@@ -58,11 +60,6 @@ class StoredVar {
           setTimeFrame(SettingsVar.timeFrame);
           return data;
         });
-//    if (ds.value != null) {
-//      ds.value.forEach((key, value) => {
-//        SettingsVar.timeFrame = value ?? 'Hour'
-//      });
-//    }
   }
 
 

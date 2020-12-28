@@ -4,6 +4,8 @@ import 'package:ontrack_time_tracker/firebase/firebaseAuth.dart';
 import 'package:ontrack_time_tracker/pages/settings/variables.dart';
 import 'package:ontrack_time_tracker/theme/colors.dart';
 
+
+// Represents the Account page
 class Account extends StatefulWidget {
   @override
   _AccountState createState() => _AccountState();
@@ -11,7 +13,7 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
 
-
+  // Initializes the Account page
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,8 @@ class _AccountState extends State<Account> {
     super.dispose();
   }
 
+
+  /* Methods to make the Google AdMob Banner Ad */
 
   String getAppID() {
     if (SettingsVar.andriod) {
@@ -59,6 +63,10 @@ class _AccountState extends State<Account> {
         });
   }
 
+  /* End of ads section */
+
+
+  // Builds the Account page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

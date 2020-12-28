@@ -8,6 +8,7 @@ import '../settings/variables.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
+// Represents the Calendar page
 class Calendar extends StatefulWidget {
   @override
   _CalendarState createState() => _CalendarState();
@@ -20,6 +21,7 @@ class _CalendarState extends State<Calendar> {
   static double hours = SettingsVar.dates['${SettingsVar.today}'];
   var controller = new TextEditingController(text: '$hours');
 
+  // Initializes the Calendar page
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,8 @@ class _CalendarState extends State<Calendar> {
     super.dispose();
   }
 
+
+  // Updates the current day selected in the calender
   void updateSelectedDay (var day) {
     this.setState(() {
       days = day;
@@ -65,8 +69,8 @@ class _CalendarState extends State<Calendar> {
     return temp.toInt();
   }
 
+  // Edits the number of hours on the selected day, and updates database
   void editHours (double hour) {
-
     this.setState(() {
       var dateUtility = new DateUtil();
       var theDay = days.difference(SettingsVar.initialDate).inDays;
@@ -75,64 +79,19 @@ class _CalendarState extends State<Calendar> {
       var daysLeft = 7 - getDaysLeftInWeek(SettingsVar.rollingPeriod);
 
       if (SettingsVar.period == 'Week') {
-        if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
-
-        } else if (SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
-          if (SettingsVar.today - theDay < 7 && SettingsVar.today - theDay > 0) {
-            SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
-          }
-        } else if (!SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
-          if (SettingsVar.today - theDay < daysLeft &&
-              SettingsVar.today - theDay >= -(7 - daysLeft)) {
-            SettingsVar.setwProgressOfTimePeriod(
-                SettingsVar.wprogressOfTimePeriod + diff);
-          }
-        }
-
+        editWeek(theDay, hour, diff, daysLeft);
       } else if (SettingsVar.period == 'Month') {
-
-        if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          StoredVar.setCurrentTimePeriod(hour);
-          SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
-          StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
-        } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
-          if (days.month == DateTime.now().month) {
-            SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
-          }
-        } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
-          if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
-              dateUtility.daysInMonth(DateTime.now().month, DateTime.now().year)) {
-            SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
-          }
-        }
-
+        editMonth(theDay, hour, diff, dateUtility);
       } else if (SettingsVar.period == 'Year') {
-
-        if (SettingsVar.today == theDay) {
-          SettingsVar.currentTimePeriod = hour;
-          StoredVar.setCurrentTimePeriod(hour);
-          SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
-          StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
-        } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
-          if (days.year == DateTime.now().year) {
-            SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
-          }
-        } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
-          if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
-              dateUtility.yearLength(DateTime.now().year)) {
-            SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
-          }
-        }
-
+        editYear(theDay, hour, diff, dateUtility);
       }
 
       SettingsVar.editHours(hour, theDay);
     });
   }
 
+
+  // Builds alert dialog to get user input
   createAlertDialog(BuildContext context) {
     @override
     void initState() {
@@ -190,9 +149,7 @@ class _CalendarState extends State<Calendar> {
   }
 
 
-
-
-
+  // Builds the Calendar page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -278,5 +235,64 @@ class _CalendarState extends State<Calendar> {
         backgroundColor: ThemeColors.Red,
       ),
     );
+  }
+
+
+  /* Helper methods for editHours function */
+
+  // Updates the weekly hours
+  void editWeek(int theDay, double hour, double diff, int daysLeft) {
+    if (SettingsVar.today == theDay) {
+      SettingsVar.currentTimePeriod = hour;
+      SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
+    } else if (SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
+      if (SettingsVar.today - theDay < 7 && SettingsVar.today - theDay > 0) {
+        SettingsVar.setwProgressOfTimePeriod(SettingsVar.wprogressOfTimePeriod + diff);
+      }
+    } else if (!SettingsVar.rollingPeriod && SettingsVar.today != theDay) {
+      if (SettingsVar.today - theDay < daysLeft &&
+          SettingsVar.today - theDay >= -(7 - daysLeft)) {
+        SettingsVar.setwProgressOfTimePeriod(
+            SettingsVar.wprogressOfTimePeriod + diff);
+      }
+    }
+  }
+
+  // Updates the monthly hours
+  void editMonth(int theDay, double hour, double diff, DateUtil dateUtility) {
+    if (SettingsVar.today == theDay) {
+      SettingsVar.currentTimePeriod = hour;
+      StoredVar.setCurrentTimePeriod(hour);
+      SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+      StoredVar.setmprogressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+    } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+      if (days.month == DateTime.now().month) {
+        SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+      }
+    } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
+      if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
+          dateUtility.daysInMonth(DateTime.now().month, DateTime.now().year)) {
+        SettingsVar.setmProgressOfTimePeriod(SettingsVar.mprogressOfTimePeriod + diff);
+      }
+    }
+  }
+
+  // Updates the yearly hours
+  void editYear(int theDay, double hour, double diff, DateUtil dateUtility) {
+    if (SettingsVar.today == theDay) {
+      SettingsVar.currentTimePeriod = hour;
+      StoredVar.setCurrentTimePeriod(hour);
+      SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+      StoredVar.setyprogressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+    } else if (SettingsVar.today != theDay && !SettingsVar.rollingPeriod) {
+      if (days.year == DateTime.now().year) {
+        SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+      }
+    } else if (SettingsVar.today != theDay && SettingsVar.rollingPeriod) {
+      if (SettingsVar.today - theDay > 0 && SettingsVar.today - theDay <
+          dateUtility.yearLength(DateTime.now().year)) {
+        SettingsVar.setyProgressOfTimePeriod(SettingsVar.yprogressOfTimePeriod + diff);
+      }
+    }
   }
 }
